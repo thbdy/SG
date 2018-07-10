@@ -8,6 +8,7 @@ import com.zhangf.unnamed.module.main.model.ThemeListResult;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -42,6 +43,19 @@ public interface NetService {
      */
     @POST("iyz_index.php?module=forumdisplay&version=1")
     Observable<BaseResponse2<ThemeListResult>> fetchThemeList(@Query("fid") String fid, @Query("page")String page);
+
+    /**
+     * 获取帖子详情
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("index.php?module=viewthread&version=4")
+    Observable<BaseResponse2> fetchThreadInfo(@Field("tid") String tid);
+
+    @GET("iyz_index.php?module=checkpost&version=1")
+    Observable<BaseResponse2> fetchCheckPost();
+
+
 
 // type=3&username=752323877%40qq.com&password=dudjdjje&apiToken=153f73bf1a9039aa25211884346175cb9fc2854317
 
