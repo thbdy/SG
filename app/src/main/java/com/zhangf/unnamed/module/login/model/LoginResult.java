@@ -1,4 +1,4 @@
-package com.zhangf.unnamed.module.login.model.response;
+package com.zhangf.unnamed.module.login.model;
 
 public class LoginResult {
 

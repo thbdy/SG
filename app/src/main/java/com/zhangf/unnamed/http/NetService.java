@@ -2,10 +2,14 @@ package com.zhangf.unnamed.http;
 
 
 import com.zhangf.unnamed.base.BaseResponse;
+import com.zhangf.unnamed.base.BaseResponse2;
+import com.zhangf.unnamed.module.main.model.GetAllResult;
+import com.zhangf.unnamed.module.main.model.ThemeListResult;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 
@@ -27,8 +31,17 @@ public interface NetService {
 //    dota2 44
     @FormUrlEncoded
     @POST("iyz_index.php?module=forumindex&version=1")
-    Observable<BaseResponse> fetchGetAll(@Field("fid") String fid, @Field("page")String page);
+    Observable<BaseResponse2<GetAllResult>> fetchGetAll(@Field("fid") String fid, @Field("page")String page);
 
+
+    /**
+     * 获取主题列表
+     * @param fid
+     * @param page
+     * @return
+     */
+    @POST("iyz_index.php?module=forumdisplay&version=1")
+    Observable<BaseResponse2<ThemeListResult>> fetchThemeList(@Query("fid") String fid, @Query("page")String page);
 
 // type=3&username=752323877%40qq.com&password=dudjdjje&apiToken=153f73bf1a9039aa25211884346175cb9fc2854317
 

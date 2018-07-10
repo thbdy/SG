@@ -4,7 +4,6 @@ import com.zhangf.unnamed.base.BasePresenter;
 import com.zhangf.unnamed.base.BaseResponse;
 import com.zhangf.unnamed.http.NetService;
 import com.zhangf.unnamed.http.utils.Callback;
-import com.zhangf.unnamed.module.login.model.response.LoginResult;
 
 import javax.inject.Inject;
 

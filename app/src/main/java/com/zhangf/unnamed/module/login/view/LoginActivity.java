@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.zhangf.unnamed.MainActivity;
 import com.zhangf.unnamed.R;
+import com.zhangf.unnamed.UserInfoManager;
 import com.zhangf.unnamed.base.BaseActivity;
 import com.zhangf.unnamed.base.BaseResponse;
 import com.zhangf.unnamed.http.NetService;
@@ -14,6 +14,7 @@ import com.zhangf.unnamed.injector.component.DaggerNetServiceComponent;
 import com.zhangf.unnamed.injector.module.NetServiceModule;
 import com.zhangf.unnamed.module.login.presenter.LoginPresenter;
 import com.zhangf.unnamed.module.login.presenter.LoginPresenterImpl;
+import com.zhangf.unnamed.module.main.view.MainActivity;
 import com.zhangf.unnamed.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -45,6 +46,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
         return R.layout.activity_login;
     }
 
+
     @Override
     protected void initInject() {
         DaggerNetServiceComponent.builder().netServiceModule(new NetServiceModule(NetService.BASE_URL)).build().injectLoginActivity(this);
@@ -60,6 +62,11 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+//        Boolean isLogin = (Boolean) SPUtils.get(App.getApp(),"login_state",false);
+//        if(null != isLogin && isLogin){
+            startActivity(new Intent(this,MainActivity.class));
+//        }
+
     }
 
     @OnClick(R.id.btn_login)
@@ -85,6 +92,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     public void showLogin(BaseResponse<String> result) {
         ToastUtil.showToast(this,result.getErrorMsg());
         if(result.getError() == 0){
+            UserInfoManager.getUserInfoManager().setLogin(true);
             startActivity(new Intent(this, MainActivity.class));
         }
     }

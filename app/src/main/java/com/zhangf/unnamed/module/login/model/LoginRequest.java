@@ -1,4 +1,4 @@
-package com.zhangf.unnamed.module.login.model.request;
+package com.zhangf.unnamed.module.login.model;
 
 public class LoginRequest {
     public String getUsername() {

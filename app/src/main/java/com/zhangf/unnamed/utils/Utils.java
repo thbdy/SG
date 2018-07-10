@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 
-import com.zhangf.unnamed.UnNameApplication;
+import com.zhangf.unnamed.App;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -61,7 +61,7 @@ public class Utils {
     }
 
     public static boolean isNetworkAvailable() {
-        ConnectivityManager connectivity = (ConnectivityManager) UnNameApplication.getUnnameApplicaiton()
+        ConnectivityManager connectivity = (ConnectivityManager) App.getApp()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
             NetworkInfo info = connectivity.getActiveNetworkInfo();
