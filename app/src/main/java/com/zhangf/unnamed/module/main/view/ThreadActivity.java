@@ -1,5 +1,12 @@
 package com.zhangf.unnamed.module.main.view;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
 import com.zhangf.unnamed.R;
 import com.zhangf.unnamed.base.BaseActivity;
 import com.zhangf.unnamed.base.BaseResponse2;
@@ -8,19 +15,43 @@ import com.zhangf.unnamed.injector.component.DaggerNetServiceComponent;
 import com.zhangf.unnamed.injector.module.NetServiceModule;
 import com.zhangf.unnamed.module.main.presenter.ThreadPresenter;
 import com.zhangf.unnamed.module.main.presenter.ThreadPresenterImpl;
+import com.zhangf.unnamed.utils.JsInteraction;
 
-public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements ThreadPresenter.View{
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements ThreadPresenter.View {
+    @BindView(R.id.web_view)
+    WebView webView;
     private String mTid;
+    private String URL = "http://bbs.sgamer.com/wap/post.php?tid=";
+
     @Override
     protected void initData() {
-        mPresenter.fetchCheckPost();
-        mPresenter.fetchThreadInfo(mTid);
+//        mPresenter.fetchCheckPost();
+//        mPresenter.fetchThreadInfo(mTid);
 
     }
 
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
     protected void initView() {
         mTid = getIntent().getStringExtra("tid");
+
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+        });
+
+        webView.addJavascriptInterface(new JsInteraction(this), "android");
+        webView.loadUrl(URL+mTid);
 
 
     }
@@ -49,5 +80,12 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
     @Override
     public void showCheckPost(BaseResponse2 result) {
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
