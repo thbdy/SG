@@ -34,6 +34,5 @@ public class JsInteraction {
     @JavascriptInterface
     public void onSumResult(String message) {
         Log.e("TAG", "onSumResult_reply: "+message);
-        Toast.makeText(mContext, "测试", Toast.LENGTH_LONG).show();
     }
 }

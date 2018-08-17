@@ -1,42 +1,45 @@
 package com.zhangf.unnamed.base;
 
 
-import com.zhangf.unnamed.http.LifeSubscription;
-import com.zhangf.unnamed.http.utils.Callback;
-import com.zhangf.unnamed.http.utils.HttpUtils;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
+/**
+ * author: zhangf
+ * date: 2017年03月23日9:19
+ * desc:
+ */
 
-import rx.Observable;
+public abstract class BasePresenter<T extends BaseView> {
+    public T mView;
+
+    protected CompositeDisposable compositeSubscription;
 
 
-public class BasePresenter<T extends BaseView> {
-
-    protected Reference<T> mReferenceView;
-
-    protected T mView;
-    private Callback callback;
-
-    public void attachView(LifeSubscription mLifeSubscription) {
-        this.mReferenceView = new WeakReference<>((T) mLifeSubscription);
-        mView = mReferenceView.get();
+    public BasePresenter(T mView) {
+        this.mView = mView;
     }
 
-    protected <T> void invoke(Observable<T> observable, Callback<T> callback) {
-        this.callback = callback;
-        HttpUtils.invoke((LifeSubscription) mView, observable, callback);
+
+    public void onDestroy() {
+        unSubscribe();
+        mView = null;
     }
 
-    public void detachView() {
-        if (mReferenceView != null)
-            mReferenceView.clear();
-        mReferenceView = null;
-        if (mView != null)
-            mView = null;
-        if (callback != null) {
-            callback.detachView();
+    /**
+     * 用于解除订阅
+     *
+     * @param subscription
+     */
+    public void addSubscribe(Disposable subscription) {
+        if (compositeSubscription == null) {
+            compositeSubscription = new CompositeDisposable();
         }
+        compositeSubscription.add(subscription);
     }
 
+    public void unSubscribe() {
+        if (compositeSubscription != null)
+            compositeSubscription.clear();
+    }
 }

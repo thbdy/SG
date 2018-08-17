@@ -1,66 +1,116 @@
 package com.zhangf.unnamed.base;
 
-
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.zhangf.unnamed.http.LifeSubscription;
-import com.zhangf.unnamed.http.Stateful;
-
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
-public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements Stateful ,LifeSubscription {
-    private String TAG;
-    private CompositeSubscription mCompositeSubscription;
 
-    @Inject
+/**
+ * author: zhangf
+ * date: 2017年03月23日8:43
+ * desc:
+ */
+
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
+    public String TAG;
+    protected Context mContext;
     protected T mPresenter;
+    private CompositeDisposable compositeSubscription;
+    private ButterKnife unbinder;
+    private boolean doubleBackExit = false;
+    private boolean doubleBackExitPressedOnce = false;
+
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        TAG = getClass().getSimpleName();
+        doBeforeSetContentView();
         setContentView(getLayoutId());
         ButterKnife.bind(this);
-        TAG = getClass().getSimpleName();
-        initView();
-        initInject();
-        mPresenter.attachView(this);
+        mContext = this;
+        //创建Presenter
+        mPresenter = initPresenter();
+        // mPresenter.onAttach(this);
+        initToolBar(savedInstanceState);
+        initView(savedInstanceState);
         initData();
     }
 
-    protected abstract void initData();
+    protected abstract void initToolBar(Bundle savedInstanceState);
 
-    protected abstract void initView();
+
 
     protected abstract int getLayoutId();
 
+
+    //设置layout前配置
+    private void doBeforeSetContentView() {
+    }
+
+
+    //初始化view
+    protected abstract void initView(Bundle savedInstanceState);
+
+    protected abstract void initData();
+
+    //简单页面无需mvp就不用管此方法即可,完美兼容各种实际场景的变通
+    protected abstract T initPresenter();
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mPresenter != null) {
-            mPresenter.detachView();
+            mPresenter.onDestroy();
         }
-//        dismissSessionFailedDialog();
+        unSubscribe();
+   //     unbinder.unbind();
     }
 
 
-    /**
-     * dagger2注入
-     */
-    protected abstract void initInject();
-    //用于添加rx的监听的在onDestroy中记得关闭不然会内存泄漏。
-    @Override
-    public void bindSubscription(Subscription subscription) {
-        if (this.mCompositeSubscription == null) {
-            this.mCompositeSubscription = new CompositeSubscription();
+    public void addSubscribe(Disposable subscription) {
+        if (compositeSubscription == null) {
+            compositeSubscription = new CompositeDisposable ();
         }
-        this.mCompositeSubscription.add(subscription);
+        compositeSubscription.add(subscription);
     }
 
+    public void unSubscribe() {
+        if (compositeSubscription != null)
+            compositeSubscription.clear();
+
+    }
 
 }

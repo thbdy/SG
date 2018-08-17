@@ -40,6 +40,8 @@
 
         <!--主题详情页-->
         <activity android:name=".module.main.view.ThreadActivity"/>
+
+        <!--用户信息页面-->
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@ public class UserInfoManager {
     private static UserInfoManager userInfoManager;
 
     private Boolean login;
+    private String token;
 
     public void setUserData(String  info) {
         SPUtils.put(App.getApp(),SP_KEY,info);
@@ -32,6 +33,8 @@ public class UserInfoManager {
         }
         return userInfoManager;
     }
+
+
 
     public static void setUserInfoManager(UserInfoManager userInfoManager) {
         UserInfoManager.userInfoManager = userInfoManager;
@@ -57,5 +60,13 @@ public class UserInfoManager {
     public void setLogin(Boolean login) {
         this.login = login;
         SPUtils.put(App.getApp(),"login_state",true);
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

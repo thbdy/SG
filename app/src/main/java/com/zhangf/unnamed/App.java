@@ -3,6 +3,7 @@ package com.zhangf.unnamed;
 import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
@@ -13,8 +14,15 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 
-public class App extends Application{
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Cookie;
+
+public class App extends Application {
+    private static final String TAG = "App";
     private static App app;
+    private static List<Cookie> cookieList = new ArrayList<>();
 
     public static App getApp() {
         return app;
@@ -23,10 +31,32 @@ public class App extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+        app = this;
         initSmartRefreshLayout();
-
-
     }
+
+
+    public void saveCookie(List<Cookie> cookies) {
+
+        for (int i = 0; i < cookies.size(); i++) {
+            for (int k = 0; k < cookieList.size(); k++) {
+                if (cookieList.get(k).name().equals(cookies.get(i).name())) {
+                    cookieList.remove(k);
+                }
+            }
+        }
+
+        cookieList.addAll(cookies);
+        Log.e(TAG, "saveCookie: **********************************************");
+        for (int i = 0; i < cookieList.size(); i++) {
+            Log.e(TAG, "saveCookie: " + cookieList.get(i).name() + "   " + cookieList.get(i).value());
+        }
+    }
+
+    public List<Cookie> getCookie() {
+        return cookieList;
+    }
+
 
     private void initSmartRefreshLayout() {
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {

@@ -19,9 +19,6 @@ import com.zhangf.unnamed.R;
 import com.zhangf.unnamed.adapter.ThemeListAdapter;
 import com.zhangf.unnamed.base.BaseActivity;
 import com.zhangf.unnamed.base.BaseResponse2;
-import com.zhangf.unnamed.http.NetService;
-import com.zhangf.unnamed.injector.component.DaggerNetServiceComponent;
-import com.zhangf.unnamed.injector.module.NetServiceModule;
 import com.zhangf.unnamed.module.main.model.GetAllResult;
 import com.zhangf.unnamed.module.main.model.ThemeListResult;
 import com.zhangf.unnamed.module.main.presenter.MainPresenter;
@@ -34,7 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity<MainPresenterImpl> implements MainPresenter.View, OnRefreshListener, OnLoadMoreListener {
+public class MainActivity extends BaseActivity<MainPresenterImpl> implements MainPresenter.View, OnRefreshListener, OnLoadMoreListener, TabLayout.OnTabSelectedListener {
 
     @BindView(R.id.rv_data)
     RecyclerView rvData;
@@ -47,40 +44,25 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     private List<ThemeListResult.ForumThreadlistBean> threadlistBeanList = new ArrayList<>();
     private ArrayList<String> imageList = new ArrayList<>();
 
+    private List<GetAllResult.ForumlistBean> tabList = new ArrayList<>();
+
+    /**
+     * 板块ID
+     */
+    private String mFid = "0";
+
     @Override
     protected void initData() {
         mPresenter.fetchGetAll("44","1");
-        mPresenter.fetchThemeList("44", String.valueOf(mPage));
+
     }
 
     @Override
-    protected void initView() {
-        rvData.setLayoutManager(new LinearLayoutManager(this));
-        smartRefreshLayout.setOnRefreshListener(this);
-        smartRefreshLayout.setOnLoadMoreListener(this);
-        //tab可滚动
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-
-        themeListAdapter = new ThemeListAdapter(threadlistBeanList);
-        themeListAdapter.bindToRecyclerView(rvData);
-
-        themeListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                showImageBrowseDialog(position);
-                return false;
-            }
-        });
-        themeListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(MainActivity.this,ThreadActivity.class);
-                intent.putExtra("tid",threadlistBeanList.get(position).getTid());
-                startActivity(intent);
-            }
-        });
-
+    protected MainPresenterImpl initPresenter() {
+        return new MainPresenterImpl(this);
     }
+
+
 
 
     /**
@@ -104,21 +86,52 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     }
 
     @Override
-    protected void initInject() {
-        DaggerNetServiceComponent.builder().netServiceModule(new NetServiceModule(NetService.BASE_URL2)).build().injectMainActivity(this);
+    protected void initView(Bundle savedInstanceState) {
+        rvData.setLayoutManager(new LinearLayoutManager(this));
+        smartRefreshLayout.setOnRefreshListener(this);
+        smartRefreshLayout.setOnLoadMoreListener(this);
+        //tab可滚动
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.addOnTabSelectedListener(this);
+
+
+
+        themeListAdapter = new ThemeListAdapter(threadlistBeanList);
+        themeListAdapter.bindToRecyclerView(rvData);
+
+
+        themeListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                showImageBrowseDialog(position);
+                return false;
+            }
+        });
+        themeListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(MainActivity.this,ThreadActivity.class);
+                intent.putExtra("tid",threadlistBeanList.get(position).getTid());
+                startActivity(intent);
+            }
+        });
     }
 
-    @Override
-    public void setState(String state, String msg) {
-
-    }
 
 
     @Override
     public void showGetAll(BaseResponse2<GetAllResult> result) {
         if(result.getRequest_id().equals("0")){
-            for(int i = 0;i<result.getVariables().getForumlist().size();i++){
-                tabLayout.addTab(tabLayout.newTab().setText(result.getVariables().getForumlist().get(i).getName()));
+            tabList.clear();
+            tabList.addAll(result.getVariables().getForumlist());
+            for(int i = 0;i<tabList.size();i++){
+                if(tabList.get(i).getName().toUpperCase().equals("DOTA2")){
+                    tabList.remove(i);
+                    tabList.add(0,result.getVariables().getForumlist().get(i));
+                    tabLayout.addTab(tabLayout.newTab().setText(tabList.get(0).getName()),0,true);
+                }else {
+                    tabLayout.addTab(tabLayout.newTab().setText(tabList.get(i).getName()));
+                }
             }
         }
     }
@@ -153,16 +166,41 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     }
 
     @Override
+    protected void initToolBar(Bundle savedInstanceState) {
+
+    }
+
+    @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         mPage = 1;
-        mPresenter.fetchThemeList("44", String.valueOf(mPage));
+        mPresenter.fetchThemeList(mFid, String.valueOf(mPage));
 
     }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         mPage++;
-        mPresenter.fetchThemeList("44", String.valueOf(mPage));
+        mPresenter.fetchThemeList(mFid, String.valueOf(mPage));
+
+    }
+
+    /**
+     * 导航栏滚动监听
+     * @param tab
+     */
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        mFid = tabList.get(tab.getPosition()).getFid();
+        mPresenter.fetchThemeList(tabList.get(tab.getPosition()).getFid(), String.valueOf(mPage));
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
 
     }
 }

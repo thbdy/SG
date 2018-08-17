@@ -2,26 +2,36 @@ package com.zhangf.unnamed.module.login.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.zhangf.unnamed.App;
 import com.zhangf.unnamed.R;
 import com.zhangf.unnamed.UserInfoManager;
 import com.zhangf.unnamed.base.BaseActivity;
 import com.zhangf.unnamed.base.BaseResponse;
-import com.zhangf.unnamed.http.NetService;
-import com.zhangf.unnamed.injector.component.DaggerNetServiceComponent;
-import com.zhangf.unnamed.injector.module.NetServiceModule;
+import com.zhangf.unnamed.base.BaseResponse2;
+import com.zhangf.unnamed.base.BaseResponse3;
 import com.zhangf.unnamed.module.login.presenter.LoginPresenter;
 import com.zhangf.unnamed.module.login.presenter.LoginPresenterImpl;
+import com.zhangf.unnamed.module.main.model.CheckPostResult;
+import com.zhangf.unnamed.module.main.model.UserGoldResult;
+import com.zhangf.unnamed.module.main.model.UserInfoResult;
 import com.zhangf.unnamed.module.main.view.MainActivity;
+import com.zhangf.unnamed.utils.SPUtils;
 import com.zhangf.unnamed.utils.ToastUtil;
+import com.zhangf.unnamed.utils.TokenUtil;
+
+import java.net.URLDecoder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements LoginPresenter.View {
+
+
     @BindView(R.id.et_username)
     EditText etUsername;
     @BindView(R.id.et_pwd)
@@ -30,6 +40,10 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     Button btnLogin;
     private String username;
     private String password;
+    private String apiToken;
+
+    private String time;
+    private String code;
 
     @Override
     protected void initData() {
@@ -37,35 +51,38 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     }
 
     @Override
-    protected void initView() {
-
+    protected LoginPresenterImpl initPresenter() {
+        return new LoginPresenterImpl(this);
     }
+
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
     }
 
-
     @Override
-    protected void initInject() {
-        DaggerNetServiceComponent.builder().netServiceModule(new NetServiceModule(NetService.BASE_URL)).build().injectLoginActivity(this);
+    protected void initView(Bundle savedInstanceState) {
+
     }
 
-    @Override
-    public void setState(String state, String msg) {
 
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-//        Boolean isLogin = (Boolean) SPUtils.get(App.getApp(),"login_state",false);
-//        if(null != isLogin && isLogin){
+        Boolean isLogin = (Boolean) SPUtils.get(App.getApp(),"login_state",false);
+        if(null != isLogin && isLogin){
             startActivity(new Intent(this,MainActivity.class));
-//        }
+        }
+
+    }
+
+    @Override
+    protected void initToolBar(Bundle savedInstanceState) {
 
     }
 
@@ -81,19 +98,76 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     private void login() {
         username = etUsername.getText().toString().trim();
         password = etPwd.getText().toString().trim();
-        if(username.equals("") || password.equals("")){
-            ToastUtil.showToast(this,"请填写好完整的信息");
-            return;
-        }
-        mPresenter.fetchLogin("3", NetService.API_TOKEN,"thbdy","Zf872153");
+//        if(username.equals("") || password.equals("")){
+//            ToastUtil.showToast(this,"请填写好完整的信息");
+//            return;
+//        }
+        apiToken = TokenUtil.getToken();
+        mPresenter.fetchLogin("3", apiToken,"thbdy","Zf872153");
     }
 
     @Override
     public void showLogin(BaseResponse<String> result) {
         ToastUtil.showToast(this,result.getErrorMsg());
         if(result.getError() == 0){
+            UserInfoManager.getUserInfoManager().setToken(result.getErrorMsg());
+            SPUtils.put(App.getApp(),"token",result.getErrorMsg());
+            SPUtils.put(App.getApp(),"apiToken",apiToken);
             UserInfoManager.getUserInfoManager().setLogin(true);
-            startActivity(new Intent(this, MainActivity.class));
+
+            code = result.getExtra().split("&code=")[1];
+            time = result.getExtra().split("&code=")[0].split("time=")[1];
+            Log.e(TAG, "showLogin: "+time);
+            Log.e(TAG, "showLogin: "+code);
+
+
+
+//            https://bbs.sgamer.com/api/mobile/index.php?g=app&m=user&a=getuserinfo
+//            https://betapi.sgamer.com/index.php?g=app&m=user&a=getuserinfo
+            mPresenter.fetchUserInfo(result.getErrorMsg(),apiToken);
+//            mPresenter.fetchUserGold(result.getErrorMsg(),apiToken);
+
+
+//            mPresenter.fettchCheckPost();
+
         }
     }
+
+    @Override
+    public void showUserInfo(BaseResponse3<UserInfoResult> result) {
+
+        if(result.getError() == 0){
+//            Log.e(TAG, "showUserInfo: "+result.getItems().toString());
+//            Intent intent = new Intent(this,MainActivity.class);
+//            startActivity(intent);
+            mPresenter.fetchTimeCode(time, URLDecoder.decode(code));
+
+        }
+
+
+
+    }
+
+    @Override
+    public void showUserGold(BaseResponse3<UserGoldResult> result) {
+        if(result.getError() == 0){
+            Log.e(TAG, "showUserInfo: "+result.getItems().toString());
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void showCheckPost(BaseResponse2<CheckPostResult> result) {
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showTimeCode(String s) {
+        mPresenter.fettchCheckPost();
+
+    }
+
+
 }
