@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.zhangf.unnamed.App;
 import com.zhangf.unnamed.R;
 import com.zhangf.unnamed.UserInfoManager;
@@ -72,7 +73,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-        Boolean isLogin = (Boolean) SPUtils.get(App.getApp(), "login_state", false);
+        Boolean isLogin = UserInfoManager.getUserInfoManager().getLogin();
         if (null != isLogin && isLogin) {
             startActivity(new Intent(this, MainActivity.class));
         }
@@ -106,7 +107,6 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
 
     @Override
     public void showLogin(BaseResponse<String> result) {
-        ToastUtil.showToast(this, result.getErrorMsg());
         if (result.getError() == 0) {
             UserInfoManager.getUserInfoManager().setToken(result.getErrorMsg());
             SPUtils.put(App.getApp(), "token", result.getErrorMsg());
@@ -115,9 +115,6 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
 
             code = result.getExtra().split("&code=")[1];
             time = result.getExtra().split("&code=")[0].split("time=")[1];
-            Log.e(TAG, "showLogin: " + time);
-            Log.e(TAG, "showLogin: " + code);
-
 
 //            https://bbs.sgamer.com/api/mobile/index.php?g=app&m=user&a=getuserinfo
 //            https://betapi.sgamer.com/index.php?g=app&m=user&a=getuserinfo
@@ -134,14 +131,12 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     public void showUserInfo(BaseResponse3<UserInfoResult> result) {
 
         if (result.getError() == 0) {
+            UserInfoManager.getUserInfoManager().setUserData(new Gson().toJson(result.getItems()));
 //            Log.e(TAG, "showUserInfo: "+result.getItems().toString());
 //            Intent intent = new Intent(this,MainActivity.class);
 //            startActivity(intent);
             mPresenter.fetchTimeCode(time, URLDecoder.decode(code));
-
         }
-
-
     }
 
     @Override
@@ -155,7 +150,9 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
 
     @Override
     public void showCheckPost(BaseResponse2<CheckPostResult> result) {
+        ToastUtil.showToast(mContext,"登录成功");
         UserInfoManager.getUserInfoManager().setLogin(true);
+        SPUtils.put(mContext,"formhash",result.getVariables().getFormhash());
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 

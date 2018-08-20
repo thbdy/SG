@@ -7,7 +7,6 @@ import java.lang.reflect.Type;
 
 /**
  * Created by 75232 on 2018/8/20
- * Email：zhangfu@ylzinfo.com
  */
 public class GsonUtils {
     //线程安全的

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:layout_gravity="start"
+    android:background="@color/white"
+    android:layout_width="250dp"
+    android:layout_height="match_parent">
+    <com.zhangf.unnamed.view.CircleImageView
+        android:id="@+id/iv_head"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:textSize="18sp"
+        android:textColor="@color/black_60"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/iv_head"
+        android:text="昵称"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn_login_out"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:text="退出登录"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_below="@+id/tv_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.zhangf.unnamed.view.MenuItemView
+            android:id="@+id/miv_my_focus"
+            app:title="我的关注"
+            app:img_res="@drawable/icon_my_focus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.zhangf.unnamed.view.MenuItemView>
+        <com.zhangf.unnamed.view.MenuItemView
+            android:id="@+id/miv_my_message"
+            app:title="我的消息"
+            app:img_res="@drawable/icon_my_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.zhangf.unnamed.view.MenuItemView>
+        <com.zhangf.unnamed.view.MenuItemView
+            android:id="@+id/miv_my_thread"
+            app:title="我的贴子"
+            app:img_res="@drawable/icon_my_thread"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.zhangf.unnamed.view.MenuItemView>
+        <com.zhangf.unnamed.view.MenuItemView
+            android:id="@+id/miv_my_friends"
+            app:title="我的好友"
+            app:img_res="@drawable/icon_my_friends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.zhangf.unnamed.view.MenuItemView>
+        <!--<com.zhangf.unnamed.view.MenuItemView-->
+            <!--app:title="伐木中心"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+        <!--</com.zhangf.unnamed.view.MenuItemView>-->
+        <!--<com.zhangf.unnamed.view.MenuItemView-->
+            <!--app:title="我的竞猜"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+        <!--</com.zhangf.unnamed.view.MenuItemView>-->
+        <!--<com.zhangf.unnamed.view.MenuItemView-->
+            <!--app:title="木头详情"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+        <!--</com.zhangf.unnamed.view.MenuItemView>-->
+        <com.zhangf.unnamed.view.MenuItemView
+            android:id="@+id/miv_my_settings"
+            app:title="设置"
+            app:img_res="@drawable/icon_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.zhangf.unnamed.view.MenuItemView>
+    </LinearLayout>
+
+
+
+</RelativeLayout>

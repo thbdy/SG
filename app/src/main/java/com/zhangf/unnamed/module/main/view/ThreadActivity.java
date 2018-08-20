@@ -1,7 +1,9 @@
 package com.zhangf.unnamed.module.main.view;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
@@ -9,6 +11,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.zhangf.unnamed.App;
 import com.zhangf.unnamed.R;
@@ -21,11 +25,18 @@ import com.zhangf.unnamed.utils.JsInteraction;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Cookie;
 
 public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements ThreadPresenter.View {
+
+
     @BindView(R.id.web_view)
     WebView webView;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
     private String mTid;
     private String URL = "http://bbs.sgamer.com/wap/post.php?tid=";
 
@@ -40,7 +51,6 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
     protected ThreadPresenterImpl initPresenter() {
         return new ThreadPresenterImpl(this);
     }
-
 
 
     @Override
@@ -61,11 +71,11 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
         webView.getSettings().setLightTouchEnabled(true);
         webView.getSettings().setDatabaseEnabled(true);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         webView.setWebChromeClient(new WebChromeClient());
-        webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
@@ -73,9 +83,10 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
             }
         });
         webView.addJavascriptInterface(new JsInteraction(this), "android");
-        webView.loadUrl(URL+mTid);
-        Log.e("TAG", "initView: "+URL+mTid);
+        webView.loadUrl(URL + mTid);
+        Log.e("TAG", "initView: " + URL + mTid);
     }
+
     /**
      * 设置cookie
      */
@@ -92,14 +103,12 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
         //设置支持cookie
         cookieManager.setAcceptCookie(true);
         //进行设置cookie 参数一：登录接口的网址  参数二： 获取的cookie
-        for(Cookie cookie : App.getApp().getCookie()){
-            cookieManager.setCookie("http://bbs.sgamer.com/wap/post.php", cookie.name() + "=" + cookie.value() + ";domain=" + "bbs.sgamer.com"+";path=/");
+        for (Cookie cookie : App.getApp().getCookie()) {
+            cookieManager.setCookie("http://bbs.sgamer.com/wap/post.php", cookie.name() + "=" + cookie.value() + ";domain=" + "bbs.sgamer.com" + ";path=/");
         }
         //进行开始同步操作
         CookieSyncManager.getInstance().sync();
     }
-
-
 
 
     @Override
@@ -121,6 +130,17 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
 
     @Override
     protected void initToolBar(Bundle savedInstanceState) {
+        ivBack.setVisibility(View.VISIBLE);
+        tvTitle.setText("内容");
 
+    }
+
+    @OnClick(R.id.iv_back)
+    public void onViewClicked(View view) {
+        switch (view.getId()){
+            case R.id.iv_back:
+                this.finish();
+                break;
+        }
     }
 }

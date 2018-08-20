@@ -4,7 +4,7 @@ public class BaseResponse2<T> {
     private String Version;
     private String Charset;
     private T Variables;
-
+    private String request_id;
     public String getVersion() {
         return Version;
     }
@@ -37,7 +37,7 @@ public class BaseResponse2<T> {
         this.request_id = request_id;
     }
 
-    private String request_id;
+
 
 
 }

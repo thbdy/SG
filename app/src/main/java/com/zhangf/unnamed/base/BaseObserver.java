@@ -6,7 +6,6 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 /**
- * 项目描述：知乎日报
  * 创建人：os.zhangf
  * 类描述：-
  * 日期：2017/7/13

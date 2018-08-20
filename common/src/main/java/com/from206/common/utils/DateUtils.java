@@ -315,7 +315,7 @@ public class DateUtils extends android.text.format.DateUtils {
         long newTime = time*1000L;
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date d = new Date(time);
-        return sdf.format(time);
+        return sdf.format(newTime);
     }
     /**
      * 转换字符串日期

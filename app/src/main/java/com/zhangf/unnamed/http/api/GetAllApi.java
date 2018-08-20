@@ -10,7 +10,6 @@ import retrofit2.http.POST;
 
 /**
  * Created by 75232 on 2018/8/17
- * Email：zhangfu@ylzinfo.com
  */
 public interface GetAllApi {
     @FormUrlEncoded
