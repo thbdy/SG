@@ -8,7 +8,7 @@ public class UserInfoManager {
 
     private static UserInfoManager userInfoManager;
 
-    private Boolean login;
+    private Boolean login = false;
     private String token;
 
     public void setUserData(String  info) {

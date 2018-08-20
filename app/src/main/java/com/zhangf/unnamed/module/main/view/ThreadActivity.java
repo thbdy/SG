@@ -2,12 +2,15 @@ package com.zhangf.unnamed.module.main.view;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.zhangf.unnamed.App;
 import com.zhangf.unnamed.R;
 import com.zhangf.unnamed.base.BaseActivity;
 import com.zhangf.unnamed.base.BaseResponse2;
@@ -18,6 +21,7 @@ import com.zhangf.unnamed.utils.JsInteraction;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Cookie;
 
 public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements ThreadPresenter.View {
     @BindView(R.id.web_view)
@@ -46,6 +50,8 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+        setWebviewCookie(); //设置cookie
         mTid = getIntent().getStringExtra("tid");
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -70,6 +76,28 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
         webView.loadUrl(URL+mTid);
         Log.e("TAG", "initView: "+URL+mTid);
     }
+    /**
+     * 设置cookie
+     */
+    private void setWebviewCookie() {
+
+        //得到Cookie对象
+//        String cookie = SharedPreferencesUtils.getStr(this, "cookie");
+//        Log.d("tag", "setWebviewCookie: "+cookie);
+        CookieSyncManager.createInstance(this);
+        //得到CookieManager对象
+        CookieManager cookieManager = CookieManager.getInstance();
+        //移除当前的消息
+        cookieManager.removeAllCookie();
+        //设置支持cookie
+        cookieManager.setAcceptCookie(true);
+        //进行设置cookie 参数一：登录接口的网址  参数二： 获取的cookie
+        for(Cookie cookie : App.getApp().getCookie()){
+            cookieManager.setCookie("http://bbs.sgamer.com/wap/post.php", cookie.name() + "=" + cookie.value() + ";domain=" + "bbs.sgamer.com"+";path=/");
+        }
+        //进行开始同步操作
+        CookieSyncManager.getInstance().sync();
+    }
 
 
 
@@ -81,12 +109,6 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
 
     @Override
     public void showCheckPost(BaseResponse2<CheckPostResult> result) {
-
-
-//        CookieSyncManager.createInstance(this);
-//        CookieManager cookieManager = CookieManager.getInstance();
-//        String value = entry.getKey() + "=" + entry.getValue();// 键值对拼接成 value
-//        cookieManager.setCookie("http://bbs.sgamer.com/", value);// 设置 Cookie
 
     }
 

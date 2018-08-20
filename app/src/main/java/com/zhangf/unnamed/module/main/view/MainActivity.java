@@ -122,16 +122,20 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     @Override
     public void showGetAll(BaseResponse2<GetAllResult> result) {
         if(result.getRequest_id().equals("0")){
-            tabList.clear();
-            tabList.addAll(result.getVariables().getForumlist());
-            for(int i = 0;i<tabList.size();i++){
-                if(tabList.get(i).getName().toUpperCase().equals("DOTA2")){
-                    tabList.remove(i);
-                    tabList.add(0,result.getVariables().getForumlist().get(i));
-                    tabLayout.addTab(tabLayout.newTab().setText(tabList.get(0).getName()),0,true);
-                }else {
-                    tabLayout.addTab(tabLayout.newTab().setText(tabList.get(i).getName()));
+
+            List<GetAllResult.ForumlistBean> tempList = new ArrayList<>();
+            tempList.addAll(result.getVariables().getForumlist());
+            for(int i = 0;i<tempList.size();i++){
+                if(tempList.get(i).getName().toUpperCase().equals("DOTA2")){
+                    tempList.remove(i);
+                    tempList.add(0,result.getVariables().getForumlist().get(i));
                 }
+            }
+            tabList.clear();
+            tabList.addAll(tempList);
+
+            for(GetAllResult.ForumlistBean forumlistBean : tabList){
+                tabLayout.addTab(tabLayout.newTab().setText(forumlistBean.getName()));
             }
         }
     }

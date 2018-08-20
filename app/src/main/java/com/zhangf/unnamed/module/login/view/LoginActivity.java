@@ -67,16 +67,14 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     }
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-        Boolean isLogin = (Boolean) SPUtils.get(App.getApp(),"login_state",false);
-        if(null != isLogin && isLogin){
-            startActivity(new Intent(this,MainActivity.class));
+        Boolean isLogin = (Boolean) SPUtils.get(App.getApp(), "login_state", false);
+        if (null != isLogin && isLogin) {
+            startActivity(new Intent(this, MainActivity.class));
         }
 
     }
@@ -103,28 +101,27 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
 //            return;
 //        }
         apiToken = TokenUtil.getToken();
-        mPresenter.fetchLogin("3", apiToken,"thbdy","Zf872153");
+        mPresenter.fetchLogin("3", apiToken, "thbdy", "Zf872153");
     }
 
     @Override
     public void showLogin(BaseResponse<String> result) {
-        ToastUtil.showToast(this,result.getErrorMsg());
-        if(result.getError() == 0){
+        ToastUtil.showToast(this, result.getErrorMsg());
+        if (result.getError() == 0) {
             UserInfoManager.getUserInfoManager().setToken(result.getErrorMsg());
-            SPUtils.put(App.getApp(),"token",result.getErrorMsg());
-            SPUtils.put(App.getApp(),"apiToken",apiToken);
-            UserInfoManager.getUserInfoManager().setLogin(true);
+            SPUtils.put(App.getApp(), "token", result.getErrorMsg());
+            SPUtils.put(App.getApp(), "apiToken", apiToken);
+
 
             code = result.getExtra().split("&code=")[1];
             time = result.getExtra().split("&code=")[0].split("time=")[1];
-            Log.e(TAG, "showLogin: "+time);
-            Log.e(TAG, "showLogin: "+code);
-
+            Log.e(TAG, "showLogin: " + time);
+            Log.e(TAG, "showLogin: " + code);
 
 
 //            https://bbs.sgamer.com/api/mobile/index.php?g=app&m=user&a=getuserinfo
 //            https://betapi.sgamer.com/index.php?g=app&m=user&a=getuserinfo
-            mPresenter.fetchUserInfo(result.getErrorMsg(),apiToken);
+            mPresenter.fetchUserInfo(result.getErrorMsg(), apiToken);
 //            mPresenter.fetchUserGold(result.getErrorMsg(),apiToken);
 
 
@@ -136,7 +133,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     @Override
     public void showUserInfo(BaseResponse3<UserInfoResult> result) {
 
-        if(result.getError() == 0){
+        if (result.getError() == 0) {
 //            Log.e(TAG, "showUserInfo: "+result.getItems().toString());
 //            Intent intent = new Intent(this,MainActivity.class);
 //            startActivity(intent);
@@ -145,22 +142,23 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
         }
 
 
-
     }
 
     @Override
     public void showUserGold(BaseResponse3<UserGoldResult> result) {
-        if(result.getError() == 0){
-            Log.e(TAG, "showUserInfo: "+result.getItems().toString());
-            Intent intent = new Intent(this,MainActivity.class);
+        if (result.getError() == 0) {
+            Log.e(TAG, "showUserInfo: " + result.getItems().toString());
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
     }
 
     @Override
     public void showCheckPost(BaseResponse2<CheckPostResult> result) {
-        Intent intent = new Intent(this,MainActivity.class);
+        UserInfoManager.getUserInfoManager().setLogin(true);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+
     }
 
     @Override
