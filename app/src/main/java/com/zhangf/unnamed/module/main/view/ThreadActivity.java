@@ -135,11 +135,14 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
 
     }
 
-    @OnClick(R.id.iv_back)
+    @OnClick({R.id.iv_back,R.id.btn_send})
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.iv_back:
                 this.finish();
+                break;
+            case R.id.btn_send:
+
                 break;
         }
     }

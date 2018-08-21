@@ -62,7 +62,7 @@ public class RetrofitHelper {
      * @return
      */
     public static ThemeListApi getThemeListApi() {
-        return createApi2(ApiConstants.BASE_URL2,ThemeListApi.class);
+        return createApi2(ApiConstants.BASE_URL5,ThemeListApi.class);
     }
     /**
      *获取帖子详情

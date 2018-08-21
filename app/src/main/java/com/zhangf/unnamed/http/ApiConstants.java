@@ -15,4 +15,5 @@ public class ApiConstants {
 
     public final static String BASE_URL4 = "http://bbs.sgamer.com/api/";
 
+    public final static String BASE_URL5 = "http://bbs.sgamer.com/api/mobile/";
 }

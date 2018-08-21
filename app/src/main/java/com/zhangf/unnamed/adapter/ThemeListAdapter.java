@@ -21,6 +21,7 @@ public class ThemeListAdapter extends BaseQuickAdapter<ThemeListResult.ForumThre
     @Override
     protected void convert(BaseViewHolder helper, ThemeListResult.ForumThreadlistBean item) {
         helper.setText(R.id.tv_title,item.getSubject());
+
         CircleImageView ivHead = helper.getView(R.id.iv_head);
         Glide.with(mContext).load(item.getAvatar()).error(R.mipmap.ic_launcher).into(ivHead);
         helper.setText(R.id.tv_nickname,item.getAuthor());
@@ -34,7 +35,20 @@ public class ThemeListAdapter extends BaseQuickAdapter<ThemeListResult.ForumThre
             ivIndex.setImageResource(R.color.white);
         }
         helper.addOnClickListener(R.id.iv_index);
+        helper.setText(R.id.tv_comment,item.getReplies());
+        helper.setText(R.id.tv_views,item.getViews());
 
+        int i = Integer.parseInt(item.getReplies());
+        if(i <= 20){
+            helper.setImageResource(R.id.iv_comment,R.drawable.icon_comment);
+            helper.setTextColor(R.id.tv_comment,mContext.getResources().getColor(R.color.black_40));
+        }else if(i<= 50){
+            helper.setImageResource(R.id.iv_comment,R.drawable.icon_comment_1);
+            helper.setTextColor(R.id.tv_comment,mContext.getResources().getColor(R.color.comment_1));
+        }else {
+            helper.setImageResource(R.id.iv_comment,R.drawable.icon_comment_2);
+            helper.setTextColor(R.id.tv_comment,mContext.getResources().getColor(R.color.comment_2));
+        }
 
     }
 }

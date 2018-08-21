@@ -1,8 +1,11 @@
 package com.zhangf.unnamed.module.main.view;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -83,6 +86,14 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
      */
     private String mFid = "0";
 
+    @BindView(R.id.fab_refresh)
+    FloatingActionButton mFabRefresh;
+
+    /**
+     * 旋转动画
+     */
+    private ObjectAnimator mRotationAni;
+
     @Override
     protected void initData() {
         mPresenter.fetchGetAll("44", "1");
@@ -118,6 +129,9 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
+
+        initAni();
         tvNickName.setText(UserInfoManager.getUserInfoManager().getNickname());
 
         rvData.setLayoutManager(new LinearLayoutManager(this));
@@ -149,6 +163,15 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
         });
     }
 
+    /**
+     * 初始化动画
+     */
+    private void initAni() {
+        mRotationAni = ObjectAnimator.ofFloat(mFabRefresh,"rotation",0,360);
+        mRotationAni.setDuration(500);
+        mRotationAni.setRepeatCount(ValueAnimator.INFINITE);//无限循环
+    }
+
 
     @Override
     public void showGetAll(BaseResponse2<GetAllResult> result) {
@@ -174,17 +197,26 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     @Override
     public void showThemeList(BaseResponse2<ThemeListResult> result) {
         if (mPage == 1) {
+            mRotationAni.cancel();
             smartRefreshLayout.finishRefresh(0);
         } else {
             smartRefreshLayout.finishLoadMore();
         }
-
         if (result.getRequest_id().equals("0") && result.getVariables().getForum_threadlist().size() > 0) {
             if (mPage == 1) {
                 threadlistBeanList.clear();
             }
             threadlistBeanList.addAll(result.getVariables().getForum_threadlist());
+            //移除前六条置顶广告
+            if(mPage == 1){
+                for(int i = 0;i< 6;i++){
+                    threadlistBeanList.remove(0);
+                }
+            }
             themeListAdapter.notifyDataSetChanged();
+            if(mPage == 1){
+                rvData.smoothScrollToPosition(0);
+            }
         } else {
             mPage--;
             Toast.makeText(this, "错误", Toast.LENGTH_SHORT).show();
@@ -245,8 +277,12 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
         switch (view.getId()){
             //刷新
             case R.id.fab_refresh:
+
+                mRotationAni.start();
+
                 mPage = 1;
                 mPresenter.fetchThemeList(mFid, String.valueOf(mPage));
+
                 break;
                 //退出登录
             case R.id.btn_login_out:

@@ -153,6 +153,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
         ToastUtil.showToast(mContext,"登录成功");
         UserInfoManager.getUserInfoManager().setLogin(true);
         SPUtils.put(mContext,"formhash",result.getVariables().getFormhash());
+        this.finish();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 

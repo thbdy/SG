@@ -12,6 +12,8 @@
     <color name="white">#ffffff</color>
     <color name="common_bg">#eeeeee</color>
     <color name="black">#000000</color>
+    <color name="comment_1">#f4ea2a</color>
+    <color name="comment_2">#d81e06</color>
 
 
 </resources>
