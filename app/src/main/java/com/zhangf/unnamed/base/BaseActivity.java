@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.zhangf.unnamed.weight.LoadingDialog;
+
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -24,6 +26,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     private ButterKnife unbinder;
     private boolean doubleBackExit = false;
     private boolean doubleBackExitPressedOnce = false;
+
+    private LoadingDialog mLoadingDialog;
 
 
 
@@ -97,6 +101,31 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         }
         unSubscribe();
    //     unbinder.unbind();
+    }
+
+    /**
+     * 显示加载弹窗
+     */
+    public void showLoadingDialog(){
+        if(mLoadingDialog == null){
+            mLoadingDialog = new LoadingDialog(mContext);
+        }
+        if(!mLoadingDialog.isShowing()){
+            mLoadingDialog.show();
+        }
+
+    }
+
+    /**
+     * 关闭加载弹窗
+     */
+    public void dismissLoadingDialog(){
+        if (null != mLoadingDialog) {
+            if (mLoadingDialog.isShowing()) {
+                mLoadingDialog.dismiss();
+            }
+        }
+        mLoadingDialog = null;
     }
 
 

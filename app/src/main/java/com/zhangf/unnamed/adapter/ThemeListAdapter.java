@@ -8,7 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zhangf.unnamed.R;
 import com.zhangf.unnamed.module.main.model.ThemeListResult;
-import com.zhangf.unnamed.view.CircleImageView;
+import com.zhangf.unnamed.weight.CircleImageView;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class ThemeListAdapter extends BaseQuickAdapter<ThemeListResult.ForumThre
         helper.setText(R.id.tv_title,item.getSubject());
 
         CircleImageView ivHead = helper.getView(R.id.iv_head);
-        Glide.with(mContext).load(item.getAvatar()).error(R.mipmap.ic_launcher).into(ivHead);
+        Glide.with(mContext).load(item.getAvatar()).error(R.drawable.icon_default_head).into(ivHead);
         helper.setText(R.id.tv_nickname,item.getAuthor());
         helper.setText(R.id.tv_time,item.getLastpost());
         ImageView ivIndex = (ImageView) helper.getView(R.id.iv_index);
@@ -48,6 +48,18 @@ public class ThemeListAdapter extends BaseQuickAdapter<ThemeListResult.ForumThre
         }else {
             helper.setImageResource(R.id.iv_comment,R.drawable.icon_comment_2);
             helper.setTextColor(R.id.tv_comment,mContext.getResources().getColor(R.color.comment_2));
+        }
+
+        int j = Integer.parseInt(item.getViews());
+        if(j <= 2000){
+            helper.setImageResource(R.id.iv_views,R.drawable.icon_views);
+            helper.setTextColor(R.id.tv_views,mContext.getResources().getColor(R.color.black_40));
+        }else if (j <= 5000){
+            helper.setImageResource(R.id.iv_views,R.drawable.icon_views_1);
+            helper.setTextColor(R.id.tv_views,mContext.getResources().getColor(R.color.comment_1));
+        }else {
+            helper.setImageResource(R.id.iv_views,R.drawable.icon_views_2);
+            helper.setTextColor(R.id.tv_views,mContext.getResources().getColor(R.color.comment_2));
         }
 
     }

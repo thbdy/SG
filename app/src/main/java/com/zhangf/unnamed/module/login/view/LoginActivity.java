@@ -3,6 +3,7 @@ package com.zhangf.unnamed.module.login.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -101,8 +102,8 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
 //            ToastUtil.showToast(this,"请填写好完整的信息");
 //            return;
 //        }
-        apiToken = TokenUtil.getToken();
-        mPresenter.fetchLogin("3", apiToken, "thbdy", "Zf872153");
+
+        showLoadingDialog();
     }
 
     @Override
@@ -124,6 +125,8 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
 
 //            mPresenter.fettchCheckPost();
 
+        }else {
+            dismissLoadingDialog();
         }
     }
 
@@ -136,6 +139,8 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
 //            Intent intent = new Intent(this,MainActivity.class);
 //            startActivity(intent);
             mPresenter.fetchTimeCode(time, URLDecoder.decode(code));
+        }else {
+            dismissLoadingDialog();
         }
     }
 
@@ -150,6 +155,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
 
     @Override
     public void showCheckPost(BaseResponse2<CheckPostResult> result) {
+        dismissLoadingDialog();
         ToastUtil.showToast(mContext,"登录成功");
         UserInfoManager.getUserInfoManager().setLogin(true);
         SPUtils.put(mContext,"formhash",result.getVariables().getFormhash());
@@ -162,6 +168,21 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     @Override
     public void showTimeCode(String s) {
         mPresenter.fettchCheckPost();
+
+    }
+
+    @OnClick({R.id.btn_account_1,R.id.btn_account_2})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.btn_account_1:
+                apiToken = TokenUtil.getToken();
+                mPresenter.fetchLogin("3", apiToken, "thbdy", "Zf872153");
+                break;
+            case R.id.btn_account_2:
+                apiToken = TokenUtil.getToken();
+                mPresenter.fetchLogin("3", apiToken, "潇洒哥666", "Dota1234");
+                break;
+        }
 
     }
 

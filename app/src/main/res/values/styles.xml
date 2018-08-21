@@ -13,4 +13,8 @@
         <attr name="civ_border_overlay" format="boolean"/>
         <attr name="civ_fill_color" format="color"/>
     </declare-styleable>
+    <style name="CommonDialogTheme" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>

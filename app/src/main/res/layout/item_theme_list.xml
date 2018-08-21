@@ -73,7 +73,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/tv_title">
 
-            <com.zhangf.unnamed.view.CircleImageView
+            <com.zhangf.unnamed.weight.CircleImageView
                 android:id="@+id/iv_head"
                 android:layout_width="25dp"
                 android:layout_height="25dp"

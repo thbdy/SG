@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <com.zhangf.unnamed.view.CircleImageView
+    <com.zhangf.unnamed.weight.CircleImageView
         android:id="@+id/civ_head"
         android:layout_margin="10dp"
         android:layout_width="50dp"

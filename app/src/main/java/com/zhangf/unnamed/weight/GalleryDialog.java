@@ -1,4 +1,4 @@
-package com.zhangf.unnamed.view;
+package com.zhangf.unnamed.weight;
 
 import android.app.Dialog;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.zhangf.unnamed.view;
+package com.zhangf.unnamed.weight;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -29,11 +29,18 @@ public class MenuItemView extends LinearLayout {
         View view = inflater.inflate(R.layout.item_menu_layout, this, true);
         itemImageView = view.findViewById(R.id.item_img);
         itemNameView = view.findViewById(R.id.item_name);
+        tvMessageTip = view.findViewById(R.id.tv_message_tip);
         TypedArray typedArray = getResources().obtainAttributes(attrs, R.styleable.MineItemView);
 
         String itemName = typedArray.getString(R.styleable.MineItemView_title);
         int drawableId = typedArray.getResourceId(R.styleable.MineItemView_img_res, R.mipmap.ic_launcher);
         boolean showTip = typedArray.getBoolean(R.styleable.MineItemView_showTip,false);
+        if(showTip){
+            tvMessageTip.setVisibility(VISIBLE);
+        }else {
+            tvMessageTip.setVisibility(GONE);
+        }
+
 
         itemImageView.setBackgroundResource(drawableId);
         itemNameView.setText(itemName);

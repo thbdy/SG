@@ -2,14 +2,24 @@ package com.zhangf.unnamed.module.main.view;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,11 +99,22 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
 
     @BindView(R.id.fab_refresh)
     FloatingActionButton mFabRefresh;
-
+    @BindView(R.id.iv_blur)
+    ImageView ivBlur;
     /**
      * 旋转动画
      */
     private ObjectAnimator mRotationAni;
+    /**
+     * 金币数量
+     */
+    @BindView(R.id.tv_gold)
+    TextView tvGold;
+    /**
+     * 消息提示
+     */
+    @BindView(R.id.tv_message_tip)
+    TextView tvMsgTip;
 
     @Override
     protected void initData() {
@@ -138,7 +159,10 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
 
 
         initAni();
-        tvNickName.setText(UserInfoManager.getUserInfoManager().getNickname());
+        tvNickName.setText(UserInfoManager.getUserInfoManager().getNickname());  //昵称
+        tvGold.setText(String.valueOf(UserInfoManager.getUserInfoManager().getGold())); //金币
+        tvMsgTip.setText("11"); //消息提示
+
 
         rvData.setLayoutManager(new LinearLayoutManager(this));
         smartRefreshLayout.setOnRefreshListener(this);
@@ -170,12 +194,17 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     }
 
     /**
-     * 初始化动画
+     * 初始化动画和高斯模糊图片
      */
     private void initAni() {
         mRotationAni = ObjectAnimator.ofFloat(mFabRefresh,"rotation",0,360);
         mRotationAni.setDuration(500);
         mRotationAni.setRepeatCount(ValueAnimator.INFINITE);//无限循环
+
+        Bitmap mBitmap = BitmapFactory.decodeResource(mContext.getResources(),R.drawable.icon_default_head);
+        Bitmap rsBitmap = rsBlur(this,mBitmap,2);
+        ivBlur.setImageBitmap(rsBitmap);
+
     }
 
 
@@ -318,4 +347,20 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
 
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private  Bitmap rsBlur(Context context, Bitmap source, int radius){
+        Bitmap inputBmp = source;
+        RenderScript renderScript =  RenderScript.create(context);
+        final Allocation input = Allocation.createFromBitmap(renderScript,inputBmp);
+        final Allocation output = Allocation.createTyped(renderScript,input.getType());
+        ScriptIntrinsicBlur scriptIntrinsicBlur = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
+        scriptIntrinsicBlur.setInput(input);
+        scriptIntrinsicBlur.setRadius(radius);
+        scriptIntrinsicBlur.forEach(output);
+        output.copyTo(inputBmp);
+        renderScript.destroy();
+        return inputBmp;
+    }
+
 }
