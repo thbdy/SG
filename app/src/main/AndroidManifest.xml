@@ -47,6 +47,9 @@
         <!--我的消息-->
         <activity android:name=".module.menu.view.MyMessageActivity"/>
 
+        <!--小黑屋-->
+        <activity android:name=".module.menu.view.DarkRoomActivity"/>
+
     </application>
 
 </manifest>

@@ -66,6 +66,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </com.zhangf.unnamed.view.MenuItemView>
+
+        <com.zhangf.unnamed.view.MenuItemView
+            android:id="@+id/miv_dark_room"
+            app:title="小黑屋"
+            app:img_res="@drawable/icon_my_friends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.zhangf.unnamed.view.MenuItemView>
         <!--<com.zhangf.unnamed.view.MenuItemView-->
             <!--app:title="伐木中心"-->
             <!--android:layout_width="match_parent"-->

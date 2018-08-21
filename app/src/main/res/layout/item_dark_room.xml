@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/ll_bg"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="12sp"
+            android:id="@+id/tv_user_name"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="用户名"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="10sp"
+            android:id="@+id/tv_action"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="操作行为"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="10sp"
+            android:id="@+id/tv_end_time"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="解封时间"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="10sp"
+            android:id="@+id/tv_action_time"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="封禁时间"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:maxLines="2"
+            android:textSize="10sp"
+            android:id="@+id/tv_action_reason"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="封禁理由"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

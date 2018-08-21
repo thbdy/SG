@@ -29,6 +29,7 @@ import com.zhangf.unnamed.module.main.model.GetAllResult;
 import com.zhangf.unnamed.module.main.model.ThemeListResult;
 import com.zhangf.unnamed.module.main.presenter.MainPresenter;
 import com.zhangf.unnamed.module.main.presenter.MainPresenterImpl;
+import com.zhangf.unnamed.module.menu.view.DarkRoomActivity;
 import com.zhangf.unnamed.module.menu.view.MyFocusActivity;
 import com.zhangf.unnamed.module.menu.view.MyMessageActivity;
 import com.zhangf.unnamed.utils.GlideImageEngine;
@@ -97,7 +98,6 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     @Override
     protected void initData() {
         mPresenter.fetchGetAll("44", "1");
-
     }
 
     @Override
@@ -112,12 +112,18 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
      * @param position
      */
     private void showImageBrowseDialog(int position) {
+        ArrayList<String> mImageList = new ArrayList<>();
         imageList.clear();
         imageList.addAll(threadlistBeanList.get(position).getAttachment_urls());
+        for(String s:threadlistBeanList.get(position).getAttachment_urls()){
+            mImageList.add(s.replace("size=200_200","size=400_400"));
+        }
+
+//        http://bbs.sgamer.com/plugin.php?id=bigapp:optpic&mod=__x__&url=http%3A%2F%2Ffj2.sgamer.com%2Fattachment%2Fforum%2F201808%2F21%2F014801ac1g0y0b2htyhx1h.jpg
         MNImageBrowser.with(this)
                 .setCurrentPosition(0)
                 .setImageEngine(new GlideImageEngine())
-                .setImageList(imageList)
+                .setImageList(mImageList)
                 .setIndicatorHide(false)
                 .show(rvData);
     }
@@ -272,7 +278,7 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     }
 
     @OnClick({R.id.fab_refresh,R.id.btn_login_out,R.id.miv_my_focus,R.id.miv_my_message,R.id.miv_my_thread,
-                R.id.miv_my_friends,R.id.miv_my_settings})
+                R.id.miv_my_friends,R.id.miv_my_settings,R.id.miv_dark_room})
     public void onViewClicked(View view) {
         switch (view.getId()){
             //刷新
@@ -304,6 +310,10 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
                 //我的消息
             case R.id.miv_my_message:
                 startActivity(new Intent(mContext, MyMessageActivity.class));
+                break;
+                //小黑屋
+            case R.id.miv_dark_room:
+                startActivity(new Intent(mContext, DarkRoomActivity.class));
                 break;
 
         }
