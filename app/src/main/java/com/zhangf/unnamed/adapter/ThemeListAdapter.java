@@ -20,6 +20,7 @@ public class ThemeListAdapter extends BaseQuickAdapter<ThemeListResult.ForumThre
 
     @Override
     protected void convert(BaseViewHolder helper, ThemeListResult.ForumThreadlistBean item) {
+        helper.addOnClickListener(R.id.iv_head);
         helper.setText(R.id.tv_title,item.getSubject());
 
         CircleImageView ivHead = helper.getView(R.id.iv_head);

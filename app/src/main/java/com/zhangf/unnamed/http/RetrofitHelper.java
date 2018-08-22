@@ -8,6 +8,7 @@ import com.zhangf.unnamed.http.api.GetAllApi;
 import com.zhangf.unnamed.http.api.LoginServiceApi;
 import com.zhangf.unnamed.http.api.NotificationApi;
 import com.zhangf.unnamed.http.api.PrivateLetterApi;
+import com.zhangf.unnamed.http.api.ProFileApi;
 import com.zhangf.unnamed.http.api.ThemeListApi;
 import com.zhangf.unnamed.http.api.ThreadInfoApi;
 import com.zhangf.unnamed.http.api.TimeCodeApi;
@@ -115,6 +116,20 @@ public class RetrofitHelper {
     public static PrivateLetterApi getPrivateLetterApi() {
         return createApi2(ApiConstants.BASE_URL2,PrivateLetterApi.class);
     }
+    /**
+     *个人主页
+     * @return
+     */
+    public static ProFileApi getProFileApi() {
+        return createApi2(ApiConstants.BASE_URL2,ProFileApi.class);
+    }
+
+
+
+
+
+
+
 
 
     private static void initOkHttpClient() {

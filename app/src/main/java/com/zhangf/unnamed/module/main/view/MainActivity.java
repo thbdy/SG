@@ -2,18 +2,11 @@ package com.zhangf.unnamed.module.main.view;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +36,7 @@ import com.zhangf.unnamed.module.menu.view.DarkRoomActivity;
 import com.zhangf.unnamed.module.menu.view.MyFocusActivity;
 import com.zhangf.unnamed.module.menu.view.MyMessageActivity;
 import com.zhangf.unnamed.utils.GlideImageEngine;
+import com.zhangf.unnamed.utils.ImageBlurUtil;
 import com.zhangf.unnamed.utils.SPUtils;
 import com.zhangf.unnamed.utils.SaveCookiesUtils;
 import com.zhangf.unnamed.utils.ToastUtil;
@@ -157,12 +151,8 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     @Override
     protected void initView(Bundle savedInstanceState) {
 
-
         initAni();
-        tvNickName.setText(UserInfoManager.getUserInfoManager().getNickname());  //昵称
-        tvGold.setText(String.valueOf(UserInfoManager.getUserInfoManager().getGold())); //金币
-        tvMsgTip.setText("11"); //消息提示
-
+        initLeftMenuData();
 
         rvData.setLayoutManager(new LinearLayoutManager(this));
         smartRefreshLayout.setOnRefreshListener(this);
@@ -179,7 +169,14 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
         themeListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                showImageBrowseDialog(position);
+                if(view.getId() == R.id.iv_head){
+                    Intent intent = new Intent(mContext,UserHomePagerActivity.class);
+                    intent.putExtra("uid",threadlistBeanList.get(position).getAuthorid());
+                    startActivity(intent);
+                }
+                if(view.getId() == R.id.iv_index){
+                    showImageBrowseDialog(position);
+                }
                 return false;
             }
         });
@@ -194,17 +191,27 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     }
 
     /**
-     * 初始化动画和高斯模糊图片
+     * 初始化侧边栏数据
+     */
+    private void initLeftMenuData() {
+
+        Bitmap mBitmap = BitmapFactory.decodeResource(mContext.getResources(),R.drawable.icon_default_head);
+        Bitmap rsBitmap = ImageBlurUtil.rsBlur(this,mBitmap,0.4f,2);
+        ivBlur.setImageBitmap(rsBitmap);
+
+        tvNickName.setText(UserInfoManager.getUserInfoManager().getNickname());  //昵称
+        tvGold.setText(String.valueOf(UserInfoManager.getUserInfoManager().getGold())); //金币
+        tvMsgTip.setText("11"); //消息提示
+
+    }
+
+    /**
+     * 初始化动画
      */
     private void initAni() {
         mRotationAni = ObjectAnimator.ofFloat(mFabRefresh,"rotation",0,360);
         mRotationAni.setDuration(500);
         mRotationAni.setRepeatCount(ValueAnimator.INFINITE);//无限循环
-
-        Bitmap mBitmap = BitmapFactory.decodeResource(mContext.getResources(),R.drawable.icon_default_head);
-        Bitmap rsBitmap = rsBlur(this,mBitmap,2);
-        ivBlur.setImageBitmap(rsBitmap);
-
     }
 
 
@@ -271,6 +278,10 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
 
     }
 
+    /**
+     * 下拉刷新
+     * @param refreshLayout
+     */
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         mPage = 1;
@@ -278,6 +289,10 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
 
     }
 
+    /**
+     * 上拉加载更多
+     * @param refreshLayout
+     */
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         mPage++;
@@ -307,7 +322,7 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     }
 
     @OnClick({R.id.fab_refresh,R.id.btn_login_out,R.id.miv_my_focus,R.id.miv_my_message,R.id.miv_my_thread,
-                R.id.miv_my_friends,R.id.miv_my_settings,R.id.miv_dark_room})
+                R.id.miv_my_friends,R.id.miv_my_settings,R.id.miv_dark_room,R.id.btn_daily_click})
     public void onViewClicked(View view) {
         switch (view.getId()){
             //刷新
@@ -344,23 +359,12 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
             case R.id.miv_dark_room:
                 startActivity(new Intent(mContext, DarkRoomActivity.class));
                 break;
+                //签到
+            case R.id.btn_daily_click:
+
+                break;
 
         }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private  Bitmap rsBlur(Context context, Bitmap source, int radius){
-        Bitmap inputBmp = source;
-        RenderScript renderScript =  RenderScript.create(context);
-        final Allocation input = Allocation.createFromBitmap(renderScript,inputBmp);
-        final Allocation output = Allocation.createTyped(renderScript,input.getType());
-        ScriptIntrinsicBlur scriptIntrinsicBlur = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
-        scriptIntrinsicBlur.setInput(input);
-        scriptIntrinsicBlur.setRadius(radius);
-        scriptIntrinsicBlur.forEach(output);
-        output.copyTo(inputBmp);
-        renderScript.destroy();
-        return inputBmp;
     }
 
 }

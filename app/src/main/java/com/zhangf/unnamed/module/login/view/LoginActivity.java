@@ -175,10 +175,12 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     public void onClick(View view){
         switch (view.getId()){
             case R.id.btn_account_1:
+                showLoadingDialog("正在登录");
                 apiToken = TokenUtil.getToken();
                 mPresenter.fetchLogin("3", apiToken, "thbdy", "Zf872153");
                 break;
             case R.id.btn_account_2:
+                showLoadingDialog("正在登录");
                 apiToken = TokenUtil.getToken();
                 mPresenter.fetchLogin("3", apiToken, "潇洒哥666", "Dota1234");
                 break;

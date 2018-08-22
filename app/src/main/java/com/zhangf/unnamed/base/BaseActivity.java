@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.zhangf.unnamed.weight.LoadingDialog;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.zhangf.unnamed.R;
 
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
@@ -27,7 +28,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     private boolean doubleBackExit = false;
     private boolean doubleBackExitPressedOnce = false;
 
-    private LoadingDialog mLoadingDialog;
+    private MaterialDialog mLoadingDialog;
+
 
 
 
@@ -108,13 +110,34 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
      */
     public void showLoadingDialog(){
         if(mLoadingDialog == null){
-            mLoadingDialog = new LoadingDialog(mContext);
+            mLoadingDialog = new MaterialDialog.Builder(mContext)
+                    .title(R.string.progress_dialog)
+                    .content(R.string.please_wait)
+                    .widgetColor(mContext.getResources().getColor(R.color.colorPrimary))
+                    .progress(true, 100, false)
+                    .build();
         }
         if(!mLoadingDialog.isShowing()){
             mLoadingDialog.show();
         }
-
     }
+    /**
+     * 显示加载弹窗
+     */
+    public void showLoadingDialog(String title){
+        if(mLoadingDialog == null){
+            mLoadingDialog = new MaterialDialog.Builder(mContext)
+                    .title(title)
+                    .content(R.string.please_wait)
+                    .widgetColor(mContext.getResources().getColor(R.color.colorPrimary))
+                    .progress(true, 100, false)
+                    .build();
+        }
+        if(!mLoadingDialog.isShowing()){
+            mLoadingDialog.show();
+        }
+    }
+
 
     /**
      * 关闭加载弹窗

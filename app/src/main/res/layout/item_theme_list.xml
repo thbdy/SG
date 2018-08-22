@@ -75,8 +75,8 @@
 
             <com.zhangf.unnamed.weight.CircleImageView
                 android:id="@+id/iv_head"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:src="@mipmap/ic_launcher" />
 

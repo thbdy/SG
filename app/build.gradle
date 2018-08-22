@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -60,4 +61,9 @@ dependencies {
     implementation 'pub.devrel:easypermissions:0.3.1'
     // Google 权限申请解决方案
     implementation 'org.jsoup:jsoup:1.9.2'
+    //弹窗
+    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
+    implementation 'jp.wasabeef:glide-transformations:2.0.1'
+
+
 }

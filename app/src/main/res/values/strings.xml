@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SG</string>
+    <string name="progress_dialog">正在进行网络请求</string>
+    <string name="please_wait">请等待</string>
 </resources>

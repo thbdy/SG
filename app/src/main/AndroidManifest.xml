@@ -50,6 +50,9 @@
         <!--小黑屋-->
         <activity android:name=".module.menu.view.DarkRoomActivity"/>
 
+        <!--用户个人主页-->
+        <activity android:name=".module.main.view.UserHomePagerActivity"/>
+
     </application>
 
 </manifest>
