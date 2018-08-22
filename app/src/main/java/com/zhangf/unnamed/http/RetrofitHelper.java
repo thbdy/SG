@@ -6,6 +6,7 @@ import com.zhangf.unnamed.App;
 import com.zhangf.unnamed.http.api.CheckPostApi;
 import com.zhangf.unnamed.http.api.GetAllApi;
 import com.zhangf.unnamed.http.api.LoginServiceApi;
+import com.zhangf.unnamed.http.api.MyFriendApi;
 import com.zhangf.unnamed.http.api.NotificationApi;
 import com.zhangf.unnamed.http.api.PrivateLetterApi;
 import com.zhangf.unnamed.http.api.ProFileApi;
@@ -123,7 +124,13 @@ public class RetrofitHelper {
     public static ProFileApi getProFileApi() {
         return createApi2(ApiConstants.BASE_URL2,ProFileApi.class);
     }
-
+    /**
+     *我的好友
+     * @return
+     */
+    public static MyFriendApi getMyFriendsApi() {
+        return createApi2(ApiConstants.BASE_URL2,MyFriendApi.class);
+    }
 
 
 

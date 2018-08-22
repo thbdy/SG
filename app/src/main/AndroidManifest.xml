@@ -53,6 +53,9 @@
         <!--用户个人主页-->
         <activity android:name=".module.main.view.UserHomePagerActivity"/>
 
+        <!--我的好友-->
+        <activity android:name=".module.menu.view.MyFriendsActivity"/>
+
     </application>
 
 </manifest>

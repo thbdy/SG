@@ -12,6 +12,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.zhangf.unnamed.App;
 import com.zhangf.unnamed.R;
 import com.zhangf.unnamed.UserInfoManager;
 import com.zhangf.unnamed.adapter.ThemeListAdapter;
@@ -34,6 +36,7 @@ import com.zhangf.unnamed.module.main.presenter.MainPresenter;
 import com.zhangf.unnamed.module.main.presenter.MainPresenterImpl;
 import com.zhangf.unnamed.module.menu.view.DarkRoomActivity;
 import com.zhangf.unnamed.module.menu.view.MyFocusActivity;
+import com.zhangf.unnamed.module.menu.view.MyFriendsActivity;
 import com.zhangf.unnamed.module.menu.view.MyMessageActivity;
 import com.zhangf.unnamed.utils.GlideImageEngine;
 import com.zhangf.unnamed.utils.ImageBlurUtil;
@@ -322,7 +325,7 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     }
 
     @OnClick({R.id.fab_refresh,R.id.btn_login_out,R.id.miv_my_focus,R.id.miv_my_message,R.id.miv_my_thread,
-                R.id.miv_my_friends,R.id.miv_my_settings,R.id.miv_dark_room,R.id.btn_daily_click})
+                R.id.miv_my_friends,R.id.miv_my_settings,R.id.miv_dark_room,R.id.btn_daily_click,R.id.iv_head})
     public void onViewClicked(View view) {
         switch (view.getId()){
             //刷新
@@ -340,7 +343,8 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
                 SaveCookiesUtils.clear(mContext);
                 UserInfoManager.getUserInfoManager().setLogin(false);
                 SPUtils.clear(mContext);
-
+                CookieManager.getInstance().removeAllCookie();
+                App.getApp().clearCookies();
 
                 Intent intent = new Intent(mContext, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
@@ -355,6 +359,10 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
             case R.id.miv_my_message:
                 startActivity(new Intent(mContext, MyMessageActivity.class));
                 break;
+                //我的好友
+            case R.id.miv_my_friends:
+                startActivity(new Intent(mContext, MyFriendsActivity.class));
+                break;
                 //小黑屋
             case R.id.miv_dark_room:
                 startActivity(new Intent(mContext, DarkRoomActivity.class));
@@ -362,6 +370,12 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
                 //签到
             case R.id.btn_daily_click:
 
+                break;
+                //点击自己头像
+            case R.id.iv_head:
+                intent = new Intent(mContext,UserHomePagerActivity.class);
+                intent.putExtra("uid",UserInfoManager.getUserInfoManager().getUcid());
+                startActivity(intent);
                 break;
 
         }

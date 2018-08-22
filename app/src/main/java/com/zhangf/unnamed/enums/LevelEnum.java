@@ -19,7 +19,9 @@ public enum  LevelEnum {
     LEVEL_10("LV10", R.drawable.icon_level_10),
     LEVEL_11("LV11", R.drawable.icon_level_11),
     LEVEL_12("LV12", R.drawable.icon_level_12),
-    LEVEL_13("LV13", R.drawable.icon_level_13);
+    LEVEL_13("LV13", R.drawable.icon_level_13),
+    LEVEL_14("LV14", R.drawable.icon_level_14),
+    LEVEL_15("LV15", R.drawable.icon_level_15);
 
 
     public static int getImgByLevel(String level){
@@ -55,4 +57,23 @@ public enum  LevelEnum {
         this.level = level;
         this.img = img;
     }
+
+    //二货 -999999999
+    //新人 0
+    //LV1 >=10
+    //LV2 >=100
+    //LV3 >=400
+    //LV4 >=800
+    //LV5 >=1700
+    //LV6 >=2800
+    //LV7 >=4000
+    //LV8 >=6000
+    //LV9 >=9000
+    //LV10 >=15000
+    //LV11 >=25000
+    //LV12 >=50000
+    //LV13 >=100000
+    //LV14 >=200000
+    //LV15 >=500000
+
 }

@@ -1,6 +1,7 @@
 package com.zhangf.unnamed.module.menu.model;
 
 /**
+ * 小黑屋名单
  * Created by 75232 on 2018/8/21
  * Email：752323877@qq.com
  */

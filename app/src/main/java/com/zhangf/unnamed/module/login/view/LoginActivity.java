@@ -2,7 +2,6 @@ package com.zhangf.unnamed.module.login.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -77,6 +76,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
         Boolean isLogin = UserInfoManager.getUserInfoManager().getLogin();
         if (null != isLogin && isLogin) {
             startActivity(new Intent(this, MainActivity.class));
+            this.finish();
         }
 
     }
@@ -147,7 +147,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     @Override
     public void showUserGold(BaseResponse3<UserGoldResult> result) {
         if (result.getError() == 0) {
-            Log.e(TAG, "showUserInfo: " + result.getItems().toString());
+
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }

@@ -74,6 +74,7 @@
             android:layout_below="@+id/tv_title">
 
             <com.zhangf.unnamed.weight.CircleImageView
+                android:transitionName="head"
                 android:id="@+id/iv_head"
                 android:layout_width="30dp"
                 android:layout_height="30dp"

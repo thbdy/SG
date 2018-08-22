@@ -31,7 +31,11 @@ public class CookiesManager implements CookieJar {
 //        Log.e(TAG, "loadForRequest: *****************************");
         Log.e(TAG, "loadForRequest: "+App.getApp().getCookie().size());
 
-        return  App.getApp().getCookie().size() > 0 ? App.getApp().getCookie() : new ArrayList<Cookie>();
+        if( null != App.getApp().getCookie() && App.getApp().getCookie().size() > 0){
+            return  App.getApp().getCookie();
+        }else{
+            return new ArrayList<Cookie>();
+        }
     }
 
 //    private final PersistentCookieStore cookieStore = new PersistentCookieStore(App.getApp());
