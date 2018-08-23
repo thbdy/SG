@@ -30,6 +30,16 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment  {
     protected T mPresenter;
     protected CompositeDisposable compositeSubscription;
 
+    public String getmUid() {
+        return mUid;
+    }
+
+    public void setmUid(String mUid) {
+        this.mUid = mUid;
+    }
+
+    protected String mUid;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

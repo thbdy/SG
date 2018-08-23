@@ -3,8 +3,12 @@ package com.zhangf.unnamed.http;
 
 import com.from206.common.utils.CommonUtil;
 import com.zhangf.unnamed.App;
+import com.zhangf.unnamed.http.api.AddFriendApi;
 import com.zhangf.unnamed.http.api.CheckPostApi;
 import com.zhangf.unnamed.http.api.GetAllApi;
+import com.zhangf.unnamed.http.api.HisFriendsApi;
+import com.zhangf.unnamed.http.api.HisReplyApi;
+import com.zhangf.unnamed.http.api.HisThreadApi;
 import com.zhangf.unnamed.http.api.LoginServiceApi;
 import com.zhangf.unnamed.http.api.MyFriendApi;
 import com.zhangf.unnamed.http.api.NotificationApi;
@@ -132,7 +136,34 @@ public class RetrofitHelper {
         return createApi2(ApiConstants.BASE_URL2,MyFriendApi.class);
     }
 
-
+    /**
+     *添加好友申请
+     * @return
+     */
+    public static AddFriendApi getAddFriendApi() {
+        return createApi2(ApiConstants.BASE_URL2,AddFriendApi.class);
+    }
+    /**
+     *TA的好友
+     * @return
+     */
+    public static HisFriendsApi getHisFriendsApi() {
+        return createApi2(ApiConstants.BASE_URL2,HisFriendsApi.class);
+    }
+    /**
+     *TA的主题
+     * @return
+     */
+    public static HisThreadApi getHisThreadApi() {
+        return createApi2(ApiConstants.BASE_URL2,HisThreadApi.class);
+    }
+    /**
+     *TA的回复
+     * @return
+     */
+    public static HisReplyApi getHisReplyApi() {
+        return createApi2(ApiConstants.BASE_URL2,HisReplyApi.class);
+    }
 
 
 

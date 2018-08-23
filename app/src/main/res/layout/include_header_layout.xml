@@ -22,6 +22,17 @@
         android:text="标题"
         android:textColor="@color/white"
         android:textSize="18sp" />
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_right"
+        android:textSize="16sp"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+        android:textColor="@color/white"
+        android:text="右侧"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </RelativeLayout>

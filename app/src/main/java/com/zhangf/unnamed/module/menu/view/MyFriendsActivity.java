@@ -1,5 +1,6 @@
 package com.zhangf.unnamed.module.menu.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -7,10 +8,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.zhangf.unnamed.R;
 import com.zhangf.unnamed.adapter.MyFriendsAdapter;
 import com.zhangf.unnamed.base.BaseActivity;
 import com.zhangf.unnamed.base.BaseResponse2;
+import com.zhangf.unnamed.module.main.view.UserHomePagerActivity;
 import com.zhangf.unnamed.module.menu.model.MyFriendsResult;
 import com.zhangf.unnamed.module.menu.presenter.MyFriendsPresenter;
 import com.zhangf.unnamed.module.menu.presenter.MyFriendsPresenterImpl;
@@ -55,6 +58,14 @@ public class MyFriendsActivity extends BaseActivity<MyFriendsPresenterImpl> impl
         rvFriends.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new MyFriendsAdapter(R.layout.item_my_friend,mDataList);
         rvFriends.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(mContext, UserHomePagerActivity.class);
+                intent.putExtra("uid",mDataList.get(position).getUid());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

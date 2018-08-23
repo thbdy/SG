@@ -56,6 +56,9 @@
         <!--我的好友-->
         <activity android:name=".module.menu.view.MyFriendsActivity"/>
 
+        <!--添加好友-->
+        <activity android:name=".module.menu.view.AddFriendActivity"/>
+
     </application>
 
 </manifest>

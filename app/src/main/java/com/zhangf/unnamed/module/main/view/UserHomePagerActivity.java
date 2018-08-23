@@ -1,6 +1,10 @@
 package com.zhangf.unnamed.module.main.view;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -11,16 +15,22 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zhangf.unnamed.R;
+import com.zhangf.unnamed.adapter.ViewPagerAdapter;
 import com.zhangf.unnamed.base.BaseActivity;
 import com.zhangf.unnamed.base.BaseResponse2;
 import com.zhangf.unnamed.enums.LevelEnum;
 import com.zhangf.unnamed.module.main.model.ProFileResult;
 import com.zhangf.unnamed.module.main.presenter.UserHomePagerPresenter;
 import com.zhangf.unnamed.module.main.presenter.UserHomePagerPresenterImpl;
+import com.zhangf.unnamed.module.menu.view.AddFriendActivity;
 import com.zhangf.unnamed.weight.CircleImageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
@@ -28,7 +38,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
  * Created by 75232 on 2018/8/22
  * Email：752323877@qq.com
  */
-public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterImpl> implements UserHomePagerPresenter.View {
+public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterImpl> implements UserHomePagerPresenter.View, ViewPager.OnPageChangeListener, TabLayout.OnTabSelectedListener {
 
 
 //    https://bbs.sgamer.com/api/mobile/iyz_index.php?version=1&module=friend&charset=utf-8 获取我的好友列表
@@ -72,6 +82,12 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
     ProgressBar mProgressBar;
     @BindView(R.id.iv_action)
     ImageView ivAction;
+    @BindView(R.id.ll_credits)
+    LinearLayout llCredits;
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
+    @BindView(R.id.view_pager)
+    ViewPager viewPager;
     /**
      * 用户ID
      */
@@ -80,6 +96,14 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
      * 积分表
      */
     private int mCredits[] = {0, 10, 100, 400, 800, 1700, 2800, 4000, 6000, 9000, 15000, 25000, 50000, 100000, 200000, 500000};
+
+
+    private HomeReplyFragment homeReplyFragment;
+    private HomeThreadFragment homeThreadFragment;
+    private HomeFriendFragment homeFriendFragment;
+    private ViewPagerAdapter mViewPagerAdapter;
+
+    private List<Fragment> fragmentList = new ArrayList<>();
 
     @Override
     protected void initToolBar(Bundle savedInstanceState) {
@@ -96,6 +120,24 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
     @Override
     protected void initView(Bundle savedInstanceState) {
         mUid = getIntent().getStringExtra("uid");
+
+        tabLayout.addTab(tabLayout.newTab().setText("TA的回复"));
+        tabLayout.addTab(tabLayout.newTab().setText("TA的主题"));
+        tabLayout.addTab(tabLayout.newTab().setText("TA的好友"));
+
+        fragmentList.add(homeReplyFragment = new HomeReplyFragment());
+        fragmentList.add(homeThreadFragment = new HomeThreadFragment());
+        fragmentList.add(homeFriendFragment = new HomeFriendFragment());
+
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),fragmentList);
+        viewPager.setAdapter(mViewPagerAdapter);
+        viewPager.addOnPageChangeListener(this);
+
+        tabLayout.addOnTabSelectedListener(this);
+
+        homeReplyFragment.setmUid(mUid);
+        homeThreadFragment.setmUid(mUid);
+        homeFriendFragment.setmUid(mUid);
 
 
     }
@@ -174,11 +216,11 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
         //自己本人的空间
         if (result.getVariables().getSpace().getSelf().equals("1")) {
             ivAction.setVisibility(View.GONE);
-        }else {
+        } else {
             ivAction.setVisibility(View.VISIBLE);
-            if(result.getVariables().getSpace().getIs_my_friend().equals("1")){ //是我的朋友
+            if (result.getVariables().getSpace().getIs_my_friend().equals("1")) { //是我的朋友
                 ivAction.setActivated(true);
-            }else {
+            } else {
                 ivAction.setActivated(false);
             }
         }
@@ -205,4 +247,53 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
 
     }
 
+    @OnClick({R.id.iv_action})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_action:
+                //不是好友，跳转到添加好友页面
+                if (!ivAction.isActivated()) {
+                    Intent intent = new Intent(mContext, AddFriendActivity.class);
+                    intent.putExtra("uid", mUid);
+                    startActivity(intent);
+                } else { //是好友，跳转到聊天界面
+
+
+                }
+                break;
+        }
+
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        tabLayout.getTabAt(position).select();
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }
