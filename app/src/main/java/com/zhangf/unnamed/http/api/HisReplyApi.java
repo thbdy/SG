@@ -1,5 +1,7 @@
 package com.zhangf.unnamed.http.api;
 
+import com.zhangf.unnamed.module.main.model.HisReplyResult;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -10,10 +12,10 @@ import retrofit2.http.Query;
  */
 public interface HisReplyApi {
     @GET("iyz_index.php")
-    Observable<String> fetchHisReply(@Query("iyzmobile") String iyzmobile,
-                                     @Query("module")String module,
-                                     @Query("version")String version,
-                                     @Query("type")String type,
-                                     @Query("uid")String uid);
+    Observable<HisReplyResult> fetchHisReply(@Query("iyzmobile") String iyzmobile,
+                                             @Query("module")String module,
+                                             @Query("version")String version,
+                                             @Query("type")String type,
+                                             @Query("uid")String uid);
 
 }

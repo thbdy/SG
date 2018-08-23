@@ -24,7 +24,7 @@ public class PrivateLetterAdapter extends BaseQuickAdapter<PrivateLetterResult.L
     protected void convert(BaseViewHolder helper, PrivateLetterResult.ListBean item) {
         CircleImageView civHead = helper.getView(R.id.civ_head);
         Glide.with(mContext).load(item.getMsgfromid_avatar()).error(R.drawable.icon_default_head).into(civHead);
-        helper.setText(R.id.tv_nickname,item.getMsgfrom());
+        helper.setText(R.id.tv_nickname,item.getLastauthor());
         helper.setText(R.id.tv_time, DateUtils.getDateToString(Long.valueOf(item.getLastdateline())));
         helper.setText(R.id.tv_content,item.getSubject());
 

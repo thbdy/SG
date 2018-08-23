@@ -102,6 +102,7 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
     private HomeThreadFragment homeThreadFragment;
     private HomeFriendFragment homeFriendFragment;
     private ViewPagerAdapter mViewPagerAdapter;
+    private String mNickName;
 
     private List<Fragment> fragmentList = new ArrayList<>();
 
@@ -192,6 +193,7 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
                 .bitmapTransform(new BlurTransformation(this, 2, 2))
                 .into(ivBlur);
 
+        mNickName = result.getVariables().getSpace().getUsername();
         tvNickname.setText(result.getVariables().getSpace().getUsername());
 
         int img = LevelEnum.getImgByLevel(result.getVariables().getSpace().getGroup().getGrouptitle());
@@ -224,7 +226,6 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
                 ivAction.setActivated(false);
             }
         }
-
     }
 
     /**
@@ -257,6 +258,11 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
                     intent.putExtra("uid", mUid);
                     startActivity(intent);
                 } else { //是好友，跳转到聊天界面
+
+                    Intent intent = new Intent(mContext,ChatActivity.class);
+                    intent.putExtra("uid",mUid);
+                    intent.putExtra("nickname",mNickName);
+                    startActivity(intent);
 
 
                 }

@@ -4,6 +4,7 @@ package com.zhangf.unnamed.http;
 import com.from206.common.utils.CommonUtil;
 import com.zhangf.unnamed.App;
 import com.zhangf.unnamed.http.api.AddFriendApi;
+import com.zhangf.unnamed.http.api.ChatApi;
 import com.zhangf.unnamed.http.api.CheckPostApi;
 import com.zhangf.unnamed.http.api.GetAllApi;
 import com.zhangf.unnamed.http.api.HisFriendsApi;
@@ -164,6 +165,13 @@ public class RetrofitHelper {
     public static HisReplyApi getHisReplyApi() {
         return createApi2(ApiConstants.BASE_URL2,HisReplyApi.class);
     }
+    /**
+     *聊天信息
+     * @return
+     */
+    public static ChatApi getChatApi() {
+        return createApi2(ApiConstants.BASE_URL2,ChatApi.class);
+    }
 
 
 
@@ -185,7 +193,7 @@ public class RetrofitHelper {
                             .addInterceptor(interceptor) //日志
                             .cookieJar(new CookiesManager())
 //                            .addInterceptor(header) //添加消息头
-                            .addNetworkInterceptor(new CacheInterceptor()) //缓存
+//                            .addNetworkInterceptor(new CacheInterceptor()) //缓存
 //                            .addNetworkInterceptor(new StethoInterceptor()) //调试
                             .retryOnConnectionFailure(true)
                             .connectTimeout(30, TimeUnit.SECONDS)

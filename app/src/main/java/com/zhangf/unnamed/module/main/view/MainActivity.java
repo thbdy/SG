@@ -342,14 +342,18 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
                 //清楚cookie数据
                 SaveCookiesUtils.clear(mContext);
                 UserInfoManager.getUserInfoManager().setLogin(false);
+                UserInfoManager.getUserInfoManager().destroy();
                 SPUtils.clear(mContext);
                 CookieManager.getInstance().removeAllCookie();
                 App.getApp().clearCookies();
 
+
+                ToastUtil.showToast(mContext,App.getApp().getCookie().size()+"个");
+
                 Intent intent = new Intent(mContext, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
                 startActivity(intent);
-                ToastUtil.showToast(mContext, "退出登录成功");
+//                ToastUtil.showToast(mContext, "退出登录成功");
                 break;
                 //我的关注
             case R.id.miv_my_focus:

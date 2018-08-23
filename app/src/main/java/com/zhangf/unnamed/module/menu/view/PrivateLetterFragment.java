@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.zhangf.unnamed.R;
 import com.zhangf.unnamed.adapter.PrivateLetterAdapter;
 import com.zhangf.unnamed.base.BaseFragment;
@@ -55,6 +56,16 @@ public class PrivateLetterFragment extends BaseFragment<PrivateLetterPresenterIm
         rvPrivateLetter.setLayoutManager(new LinearLayoutManager(mContext));
         mAdapter = new PrivateLetterAdapter(R.layout.item_private_letter, mPrivateLetterList);
         rvPrivateLetter.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                Intent intent = new Intent(mContext,UserHomePagerActivity.class);
+//                intent.putExtra("uid",mPrivateLetterList.get(position).getAuthorid());
+//                startActivity(intent);
+
+            }
+        });
 
     }
 
