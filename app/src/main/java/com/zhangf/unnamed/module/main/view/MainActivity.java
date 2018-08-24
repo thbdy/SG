@@ -35,7 +35,7 @@ import com.zhangf.unnamed.module.main.model.ThemeListResult;
 import com.zhangf.unnamed.module.main.presenter.MainPresenter;
 import com.zhangf.unnamed.module.main.presenter.MainPresenterImpl;
 import com.zhangf.unnamed.module.menu.view.DarkRoomActivity;
-import com.zhangf.unnamed.module.menu.view.MyFocusActivity;
+import com.zhangf.unnamed.module.menu.view.SearchActivity;
 import com.zhangf.unnamed.module.menu.view.MyFriendsActivity;
 import com.zhangf.unnamed.module.menu.view.MyMessageActivity;
 import com.zhangf.unnamed.utils.GlideImageEngine;
@@ -357,7 +357,7 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
                 break;
                 //我的关注
             case R.id.miv_my_focus:
-                startActivity(new Intent(mContext, MyFocusActivity.class));
+                startActivity(new Intent(mContext, SearchActivity.class));
                 break;
                 //我的消息
             case R.id.miv_my_message:

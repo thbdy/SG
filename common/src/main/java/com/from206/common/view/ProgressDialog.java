@@ -12,7 +12,6 @@ import com.from206.common.R;
 
 
 /**
- * 项目描述：知乎日报
  * 创建人：suyx
  * 类描述：ProgressDialog
  * 日期：2016/11/2

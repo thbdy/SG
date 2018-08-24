@@ -16,12 +16,6 @@ import java.util.List;
 public class ChatAdapter extends BaseMultiItemQuickAdapter<ChatResult.ListBean,BaseViewHolder> {
 
 
-    /**
-     * Same as QuickAdapter#QuickAdapter(Context,int) but with
-     * some initialization data.
-     *
-     * @param data A new list is created out of this one to avoid mutable list
-     */
     public ChatAdapter(List<ChatResult.ListBean> data) {
         super(data);
         addItemType(ChatResult.ListBean.TYPE_1, R.layout.item_message_to);

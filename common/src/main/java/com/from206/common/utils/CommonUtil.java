@@ -9,7 +9,6 @@ import android.os.StatFs;
 import java.io.File;
 
 /**
- * 项目描述：知乎日报
  * 创建人：zhangf
  * 类描述： --
  * 日期：2017/3/14

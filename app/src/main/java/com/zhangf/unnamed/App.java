@@ -3,7 +3,6 @@ package com.zhangf.unnamed;
 import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -26,15 +25,6 @@ public class App extends Application {
     private static final String TAG = "App";
     private static App app;
 
-    public void clearCookies() {
-        cookieList.clear();
-    }
-
-    private static List<Cookie> cookieList = new ArrayList<>();
-
-    public static App getApp() {
-        return app;
-    }
 
     @Override
     public void onCreate() {
@@ -68,9 +58,7 @@ public class App extends Application {
      */
     public List<Cookie> getCookie() {
         if(null == cookieList || cookieList.size() <= 0){
-            Log.e(TAG, "getCookie: 111" );
             Map<String,?> cookies =  SaveCookiesUtils.getAll(this);
-            Log.e(TAG, "getCookie: "+cookies.size());
             for (Object o : cookies.entrySet()) {
                 Map.Entry entry = (Map.Entry) o;
                 String val = (String) entry.getValue();
@@ -97,5 +85,16 @@ public class App extends Application {
                 return footer;
             }
         });
+    }
+
+
+    public void clearCookies() {
+        cookieList.clear();
+    }
+
+    private static List<Cookie> cookieList = new ArrayList<>();
+
+    public static App getApp() {
+        return app;
     }
 }

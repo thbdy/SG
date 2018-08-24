@@ -89,7 +89,7 @@
         android:layout_height="wrap_content">
         <com.zhangf.unnamed.weight.MenuItemView
             android:id="@+id/miv_my_focus"
-            app:title="我的关注"
+            app:title="搜索"
             app:img_res="@drawable/icon_my_focus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

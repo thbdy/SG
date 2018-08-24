@@ -6,7 +6,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 /**
- * 创建人：os.zhangf
+ * 创建人：zhangf
  * 类描述：-
  * 日期：2017/7/13
  * 版权所有：
@@ -30,6 +30,8 @@ public  abstract class BaseObserver<T> implements Observer<T>{
 
     @Override
     public void onError(Throwable e) {
+
+        Log.e(TAG, "onError: "+e.getMessage() );
 
 
     }

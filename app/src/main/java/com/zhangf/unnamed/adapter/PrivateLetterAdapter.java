@@ -26,7 +26,7 @@ public class PrivateLetterAdapter extends BaseQuickAdapter<PrivateLetterResult.L
         Glide.with(mContext).load(item.getMsgfromid_avatar()).error(R.drawable.icon_default_head).into(civHead);
         helper.setText(R.id.tv_nickname,item.getLastauthor());
         helper.setText(R.id.tv_time, DateUtils.getDateToString(Long.valueOf(item.getLastdateline())));
-        helper.setText(R.id.tv_content,item.getSubject());
+        helper.setText(R.id.tv_content,item.getLastsummary());
 
 
     }

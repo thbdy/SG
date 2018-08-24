@@ -1,6 +1,8 @@
 package com.zhangf.unnamed.http;
 
 
+import android.util.Log;
+
 import com.from206.common.utils.CommonUtil;
 import com.zhangf.unnamed.App;
 import com.zhangf.unnamed.http.api.AddFriendApi;
@@ -15,13 +17,18 @@ import com.zhangf.unnamed.http.api.MyFriendApi;
 import com.zhangf.unnamed.http.api.NotificationApi;
 import com.zhangf.unnamed.http.api.PrivateLetterApi;
 import com.zhangf.unnamed.http.api.ProFileApi;
+import com.zhangf.unnamed.http.api.SearchApi;
+import com.zhangf.unnamed.http.api.SendMessageApi;
 import com.zhangf.unnamed.http.api.ThemeListApi;
 import com.zhangf.unnamed.http.api.ThreadInfoApi;
 import com.zhangf.unnamed.http.api.TimeCodeApi;
 import com.zhangf.unnamed.http.api.UserGoldApi;
 import com.zhangf.unnamed.http.api.UserInfoApi;
 import com.zhangf.unnamed.http.cookie.CookiesManager;
+import com.zhangf.unnamed.http.eventbus.RedirectEvent;
 import com.zhangf.unnamed.utils.SPUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +53,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * 版权所有：
  */
 public class RetrofitHelper {
+    private static final String TAG = "RetrofitHelper";
     private static OkHttpClient mOkHttpClient;
     static {
         initOkHttpClient();
@@ -173,7 +181,20 @@ public class RetrofitHelper {
         return createApi2(ApiConstants.BASE_URL2,ChatApi.class);
     }
 
-
+    /**
+     *发送私信
+     * @return
+     */
+    public static SendMessageApi getSendMessageApi() {
+        return createApi2(ApiConstants.BASE_URL2,SendMessageApi.class);
+    }
+    /**
+     *搜索
+     * @return
+     */
+    public static SearchApi getSearchApi() {
+        return createApi(SearchApi.class);
+    }
 
 
 
@@ -194,6 +215,7 @@ public class RetrofitHelper {
                             .cookieJar(new CookiesManager())
 //                            .addInterceptor(header) //添加消息头
 //                            .addNetworkInterceptor(new CacheInterceptor()) //缓存
+                            .addNetworkInterceptor(new Http302Interceptor())
 //                            .addNetworkInterceptor(new StethoInterceptor()) //调试
                             .retryOnConnectionFailure(true)
                             .connectTimeout(30, TimeUnit.SECONDS)
@@ -221,6 +243,19 @@ public class RetrofitHelper {
             return chain.proceed(request);
         }
     };
+
+    private static class Http302Interceptor implements Interceptor{
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            Response response = chain.proceed(request);
+            if(response.isRedirect()){
+                Log.e("TAG", "intercept: " );
+                EventBus.getDefault().post(new RedirectEvent(response.header("location")));
+            }
+            return response;
+        }
+    }
 
     /**
      * 为okhttp添加缓存，这里是考虑到服务器不支持缓存时，从而让okhttp支持缓存
@@ -266,7 +301,7 @@ public class RetrofitHelper {
      */
     private static <T> T createApi(Class<T> clazz) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ApiConstants.BASE_URL)
+                .baseUrl(ApiConstants.BASE_URL6)
                 .client(mOkHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())

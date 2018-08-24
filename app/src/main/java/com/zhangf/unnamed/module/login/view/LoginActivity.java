@@ -32,7 +32,6 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements LoginPresenter.View {
 
-
     @BindView(R.id.et_username)
     EditText etUsername;
     @BindView(R.id.et_pwd)

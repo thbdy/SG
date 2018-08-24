@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.zhangf.unnamed.R;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.disposables.CompositeDisposable;
@@ -39,7 +42,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment  {
     }
 
     protected String mUid;
-
+    private MaterialDialog mLoadingDialog;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,7 +130,51 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment  {
         Log.d(TAG, msg);
     }
 
+    /**
+     * 显示加载弹窗
+     */
+    public void showLoadingDialog(){
+        if(mLoadingDialog == null){
+            mLoadingDialog = new MaterialDialog.Builder(mContext)
+                    .title(R.string.progress_dialog)
+                    .content(R.string.please_wait)
+                    .widgetColor(mContext.getResources().getColor(R.color.colorPrimary))
+                    .progress(true, 100, false)
+                    .build();
+        }
+        if(!mLoadingDialog.isShowing()){
+            mLoadingDialog.show();
+        }
+    }
+    /**
+     * 显示加载弹窗
+     */
+    public void showLoadingDialog(String title){
+        if(mLoadingDialog == null){
+            mLoadingDialog = new MaterialDialog.Builder(mContext)
+                    .title(title)
+                    .content(R.string.please_wait)
+                    .widgetColor(mContext.getResources().getColor(R.color.colorPrimary))
+                    .progress(true, 100, false)
+                    .build();
+        }
+        if(!mLoadingDialog.isShowing()){
+            mLoadingDialog.show();
+        }
+    }
 
+
+    /**
+     * 关闭加载弹窗
+     */
+    public void dismissLoadingDialog(){
+        if (null != mLoadingDialog) {
+            if (mLoadingDialog.isShowing()) {
+                mLoadingDialog.dismiss();
+            }
+        }
+        mLoadingDialog = null;
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

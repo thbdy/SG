@@ -4,10 +4,11 @@ import com.google.gson.Gson;
 import com.zhangf.unnamed.module.main.model.UserInfoResult;
 import com.zhangf.unnamed.utils.SPUtils;
 
+/**
+ * 用户信息管理类
+ */
 public class UserInfoManager {
     private static String SP_KEY = "user_data";
-
-
     private static UserInfoManager userInfoManager;
 
     private Boolean login;
