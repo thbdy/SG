@@ -28,7 +28,7 @@ public class ThemeListAdapter extends BaseQuickAdapter<ThemeListResult.ForumThre
         helper.setText(R.id.tv_nickname,item.getAuthor());
         helper.setText(R.id.tv_time,item.getLastpost());
         ImageView ivIndex = (ImageView) helper.getView(R.id.iv_index);
-        if(item.getAttachment_urls().size() > 0){
+        if(null != item.getAttachment_urls() && item.getAttachment_urls().size() > 0){
             ivIndex.setVisibility(View.VISIBLE);
             Glide.with(mContext).load(item.getAttachment_urls().get(0)).error(R.mipmap.ic_launcher).into(ivIndex);
         }else {

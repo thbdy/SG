@@ -42,8 +42,8 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
 
     @Override
     protected void initData() {
-        mPresenter.fetchCheckPost();
-        mPresenter.fetchThreadInfo(mTid);
+//        mPresenter.fetchCheckPost();
+//        mPresenter.fetchThreadInfo(mTid);
 
     }
 

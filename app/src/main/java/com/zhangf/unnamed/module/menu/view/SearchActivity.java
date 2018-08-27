@@ -1,16 +1,27 @@
 package com.zhangf.unnamed.module.menu.view;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.zhangf.unnamed.R;
+import com.zhangf.unnamed.adapter.ThemeListAdapter;
 import com.zhangf.unnamed.base.BaseActivity;
 import com.zhangf.unnamed.base.BaseResponse;
 import com.zhangf.unnamed.http.eventbus.RedirectEvent;
+import com.zhangf.unnamed.module.main.model.ThemeListResult;
+import com.zhangf.unnamed.module.main.view.ThreadActivity;
+import com.zhangf.unnamed.module.main.view.UserHomePagerActivity;
 import com.zhangf.unnamed.module.menu.presenter.SearchPresenter;
 import com.zhangf.unnamed.module.menu.presenter.SearchPresenterImpl;
 import com.zhangf.unnamed.utils.SPUtils;
@@ -23,6 +34,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,8 +55,21 @@ public class SearchActivity extends BaseActivity<SearchPresenterImpl> implements
     EditText etSearchContent;
     @BindView(R.id.btn_search)
     Button btnSearch;
+    @BindView(R.id.rv_search)
+    RecyclerView rvSearch;
     private String url = "http://bbs.sgamer.com/search.php?mod=forum";
+    private MyHandler myHandler;
+    private String avatarUrl[] = {"http://u.sgamer.com/uc_server/data/avatar/","_avatar_big.jpg"};
     private String formhash;
+    /**
+     * 适配器
+     */
+    private ThemeListAdapter themeListAdapter;
+    /**
+     * 数据源
+     */
+    private List<ThemeListResult.ForumThreadlistBean> threadlistBeanList = new ArrayList<>();
+
     @Override
     protected void initToolBar(Bundle savedInstanceState) {
         tvTitle.setText("搜索帖子");
@@ -65,11 +91,33 @@ public class SearchActivity extends BaseActivity<SearchPresenterImpl> implements
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        myHandler = new MyHandler();
         formhash = (String) SPUtils.get(mContext, "formhash", "");
 
+        rvSearch.setLayoutManager(new LinearLayoutManager(this));
 
+        themeListAdapter = new ThemeListAdapter(threadlistBeanList);
+        rvSearch.setAdapter(themeListAdapter);
 
+        themeListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(mContext, ThreadActivity.class);
+                intent.putExtra("tid", threadlistBeanList.get(position).getTid());
+                startActivity(intent);
+            }
+        });
+        themeListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                if(view.getId() == R.id.iv_head){
+                    Intent intent = new Intent(mContext,UserHomePagerActivity.class);
+                    intent.putExtra("uid",threadlistBeanList.get(position).getAuthorid());
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -104,6 +152,16 @@ public class SearchActivity extends BaseActivity<SearchPresenterImpl> implements
         }
     }
 
+    class MyHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            themeListAdapter.notifyDataSetChanged();
+            rvSearch.smoothScrollToPosition(0);
+        }
+    }
+
+
 
 
     /**
@@ -118,6 +176,38 @@ public class SearchActivity extends BaseActivity<SearchPresenterImpl> implements
 
                     Document doc = Jsoup.connect(url).get();
                     Elements elements = doc.getElementById("threadlist").select("ul").select("li");
+
+                    threadlistBeanList.clear();
+                    for(int i=0;i<elements.size();i++){
+                        ThemeListResult.ForumThreadlistBean bean = new ThemeListResult.ForumThreadlistBean();
+                        bean.setTid(elements.get(i).id());
+                        String viewAndReply = elements.get(i).select("p").get(0).text();
+                        String reply = viewAndReply.split(" 个回复")[0];
+                        String views = viewAndReply.split(" 个回复 - ")[1].split(" 次查看")[0];
+                        bean.setViews(views);
+                        bean.setReplies(reply);
+                        bean.setLastpost(elements.get(i).select("span").get(0).text());
+                        bean.setSubject(elements.get(i).select("a").get(0).text());
+                        bean.setAuthor(elements.get(i).select("a").get(1).text());
+
+                        String avar = elements.get(i).select("a").get(1).attr("href");
+                        String uid = avar.split("space-uid-")[1].split(".html")[0];
+                        bean.setAuthorid(uid);
+                        for(int j = uid.length();j<9;j++){
+                            uid = "0"+uid;
+                        }
+                        StringBuilder  sb = new StringBuilder (uid);
+                        sb.insert(3,"/");
+                        sb.insert(6,"/");
+                        sb.insert(9,"/");
+                        String realUrl = avatarUrl[0]+sb.toString()+avatarUrl[1];
+                        bean.setAvatar(realUrl);
+                        threadlistBeanList.add(bean);
+                    }
+                    myHandler.sendEmptyMessage(0);
+
+
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -135,6 +225,7 @@ public class SearchActivity extends BaseActivity<SearchPresenterImpl> implements
     }
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void messageEventBus(RedirectEvent event){
+        Log.i(TAG, "重定向的地址:  "+url+event.url);
        connectUrl(url+event.url);
     }
 }
