@@ -25,15 +25,16 @@ import com.zhangf.unnamed.module.main.view.UserHomePagerActivity;
 import com.zhangf.unnamed.module.menu.presenter.SearchPresenter;
 import com.zhangf.unnamed.module.menu.presenter.SearchPresenterImpl;
 import com.zhangf.unnamed.utils.SPUtils;
+import com.zhangf.unnamed.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,8 +157,12 @@ public class SearchActivity extends BaseActivity<SearchPresenterImpl> implements
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            themeListAdapter.notifyDataSetChanged();
-            rvSearch.smoothScrollToPosition(0);
+            if(msg.what == 0){
+                themeListAdapter.notifyDataSetChanged();
+                rvSearch.smoothScrollToPosition(0);
+            }else {
+                ToastUtil.showToast(mContext,"没有查询到相关内容");
+            }
         }
     }
 
@@ -175,41 +180,41 @@ public class SearchActivity extends BaseActivity<SearchPresenterImpl> implements
                 try {
 
                     Document doc = Jsoup.connect(url).get();
-                    Elements elements = doc.getElementById("threadlist").select("ul").select("li");
+                    Element element = doc.getElementById("threadlist");
+                    if(null != element){
+                        Elements elements = element.select("ul").select("li");
+                        threadlistBeanList.clear();
+                        for(int i=0;i<elements.size();i++){
+                            ThemeListResult.ForumThreadlistBean bean = new ThemeListResult.ForumThreadlistBean();
+                            bean.setTid(elements.get(i).id());
+                            String viewAndReply = elements.get(i).select("p").get(0).text();
+                            String reply = viewAndReply.split(" 个回复")[0];
+                            String views = viewAndReply.split(" 个回复 - ")[1].split(" 次查看")[0];
+                            bean.setViews(views);
+                            bean.setReplies(reply);
+                            bean.setLastpost(elements.get(i).select("span").get(0).text());
+                            bean.setSubject(elements.get(i).select("a").get(0).text());
+                            bean.setAuthor(elements.get(i).select("a").get(1).text());
 
-                    threadlistBeanList.clear();
-                    for(int i=0;i<elements.size();i++){
-                        ThemeListResult.ForumThreadlistBean bean = new ThemeListResult.ForumThreadlistBean();
-                        bean.setTid(elements.get(i).id());
-                        String viewAndReply = elements.get(i).select("p").get(0).text();
-                        String reply = viewAndReply.split(" 个回复")[0];
-                        String views = viewAndReply.split(" 个回复 - ")[1].split(" 次查看")[0];
-                        bean.setViews(views);
-                        bean.setReplies(reply);
-                        bean.setLastpost(elements.get(i).select("span").get(0).text());
-                        bean.setSubject(elements.get(i).select("a").get(0).text());
-                        bean.setAuthor(elements.get(i).select("a").get(1).text());
-
-                        String avar = elements.get(i).select("a").get(1).attr("href");
-                        String uid = avar.split("space-uid-")[1].split(".html")[0];
-                        bean.setAuthorid(uid);
-                        for(int j = uid.length();j<9;j++){
-                            uid = "0"+uid;
+                            String avar = elements.get(i).select("a").get(1).attr("href");
+                            String uid = avar.split("space-uid-")[1].split(".html")[0];
+                            bean.setAuthorid(uid);
+                            for(int j = uid.length();j<9;j++){
+                                uid = "0"+uid;
+                            }
+                            StringBuilder  sb = new StringBuilder (uid);
+                            sb.insert(3,"/");
+                            sb.insert(6,"/");
+                            sb.insert(9,"/");
+                            String realUrl = avatarUrl[0]+sb.toString()+avatarUrl[1];
+                            bean.setAvatar(realUrl);
+                            threadlistBeanList.add(bean);
                         }
-                        StringBuilder  sb = new StringBuilder (uid);
-                        sb.insert(3,"/");
-                        sb.insert(6,"/");
-                        sb.insert(9,"/");
-                        String realUrl = avatarUrl[0]+sb.toString()+avatarUrl[1];
-                        bean.setAvatar(realUrl);
-                        threadlistBeanList.add(bean);
+                        myHandler.sendEmptyMessage(0);
+                    }else {
+                        myHandler.sendEmptyMessage(1);
                     }
-                    myHandler.sendEmptyMessage(0);
-
-
-
-
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

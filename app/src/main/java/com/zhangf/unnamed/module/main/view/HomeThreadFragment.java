@@ -39,7 +39,7 @@ public class HomeThreadFragment extends BaseFragment<HomeThreadPresenterImpl> im
 
     @Override
     protected void initData() {
-        mPresenter.fetchHisThread("1", "mythread2", "4", "thread", mUid);
+//        mPresenter.fetchHisThread("1", "mythread2", "4", "thread", mUid);
     }
 
     @Override

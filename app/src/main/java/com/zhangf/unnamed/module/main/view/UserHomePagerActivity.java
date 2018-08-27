@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -133,7 +134,7 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),fragmentList);
         viewPager.setAdapter(mViewPagerAdapter);
         viewPager.addOnPageChangeListener(this);
-
+        viewPager.setOffscreenPageLimit(2);
         tabLayout.addOnTabSelectedListener(this);
 
         homeReplyFragment.setmUid(mUid);
@@ -163,6 +164,7 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
 
     @Override
     public void showProfile(BaseResponse2<ProFileResult> result) {
+        Log.e(TAG, "showProfile: "+"个人资料页面"+result.toString());
 
         showImageInfo(result);
         showBaseInfo(result);

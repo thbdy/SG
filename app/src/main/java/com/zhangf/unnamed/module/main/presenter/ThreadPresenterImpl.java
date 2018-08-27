@@ -37,7 +37,28 @@ public class ThreadPresenterImpl extends BasePresenter<ThreadPresenter.View> imp
     }
 
     @Override
-    public void fetchCheckPost() {
+    public void fetchCheckPost(String mod, String action, String fid, String tid, String extra, String replysubmit, String infloat, String handlekey, String inajax, String message, String posttime, String formhash, String usesig, String subject) {
+        RetrofitHelper
+                .getReply()
+                .fetchReply(mod, action, fid, tid, extra, replysubmit, infloat, handlekey, inajax, message, posttime, formhash, usesig, subject)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseObserver<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        super.onSubscribe(d);
+                        addSubscribe(d);
+                    }
+                    @Override
+                    protected void onNextSuccess(String scenicInfo) {
+                        mView.showReply(scenicInfo);
+                    }
+                });
+    }
+
+
+    @Override
+    public void fetchReply() {
 
     }
 }

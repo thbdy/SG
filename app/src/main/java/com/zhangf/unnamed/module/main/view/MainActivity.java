@@ -225,7 +225,7 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
             List<GetAllResult.ForumlistBean> tempList = new ArrayList<>();
             tempList.addAll(result.getVariables().getForumlist());
             for (int i = 0; i < tempList.size(); i++) {
-                if (tempList.get(i).getName().toUpperCase().equals("DOTA2")) {
+                if (tempList.get(i).getName().toUpperCase().equals("刀塔")) {
                     tempList.remove(i);
                     tempList.add(0, result.getVariables().getForumlist().get(i));
                 }

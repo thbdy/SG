@@ -39,7 +39,6 @@ public class HomeFriendFragment extends BaseFragment<HomeFriendPresenterImpl> im
 //    https://bbs.sgamer.com/api/mobile/iyz_index.php?iyzmobile=1&module=mythread2&version=4&type=reply&uid=8793833
     @Override
     protected void initData() {
-
         mPresenter.fetchHisFriends("4", "friend", "me", "space", mUid);
 
     }
@@ -55,9 +54,9 @@ public class HomeFriendFragment extends BaseFragment<HomeFriendPresenterImpl> im
         rvFriends.setLayoutManager(new LinearLayoutManager(mContext));
         rvFriends.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position){
                 Intent intent = new Intent(mContext,UserHomePagerActivity.class);
                 intent.putExtra("uid",mDataList.get(position).getUid());
                 startActivity(intent);

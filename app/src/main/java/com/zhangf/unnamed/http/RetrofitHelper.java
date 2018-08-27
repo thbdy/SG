@@ -17,6 +17,7 @@ import com.zhangf.unnamed.http.api.MyFriendApi;
 import com.zhangf.unnamed.http.api.NotificationApi;
 import com.zhangf.unnamed.http.api.PrivateLetterApi;
 import com.zhangf.unnamed.http.api.ProFileApi;
+import com.zhangf.unnamed.http.api.ReplyApi;
 import com.zhangf.unnamed.http.api.SearchApi;
 import com.zhangf.unnamed.http.api.SendMessageApi;
 import com.zhangf.unnamed.http.api.ThemeListApi;
@@ -195,6 +196,14 @@ public class RetrofitHelper {
     public static SearchApi getSearchApi() {
         return createApi(SearchApi.class);
     }
+    /**
+     *回复
+     * @return
+     */
+    public static ReplyApi getReply() {
+        return createApi2(ApiConstants.BASE_URL6,ReplyApi.class);
+    }
+
 
 
 
