@@ -2,6 +2,7 @@ package com.zhangf.unnamed.module.login.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -97,12 +98,16 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     private void login() {
         username = etUsername.getText().toString().trim();
         password = etPwd.getText().toString().trim();
-//        if(username.equals("") || password.equals("")){
-//            ToastUtil.showToast(this,"请填写好完整的信息");
-//            return;
-//        }
+        if(TextUtils.isEmpty(username)){
+            ToastUtil.showToast(mContext,"用户名不能为空");
+        }
+        if(TextUtils.isEmpty(password)){
+            ToastUtil.showToast(mContext,"密码不能为空");
+        }
 
-        showLoadingDialog();
+        showLoadingDialog("正在登录");
+        apiToken = TokenUtil.getToken();
+        mPresenter.fetchLogin("3", apiToken, username, password);
     }
 
     @Override
@@ -170,21 +175,13 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
 
     }
 
-    @OnClick({R.id.btn_account_1,R.id.btn_account_2})
+    @OnClick({R.id.btn_login})
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.btn_account_1:
-                showLoadingDialog("正在登录");
-                apiToken = TokenUtil.getToken();
-                mPresenter.fetchLogin("3", apiToken, "thbdy", "Zf872153");
-                break;
-            case R.id.btn_account_2:
-                showLoadingDialog("正在登录");
-                apiToken = TokenUtil.getToken();
-                mPresenter.fetchLogin("3", apiToken, "潇洒哥666", "Dota1234");
+            case R.id.btn_login:
+                login();
                 break;
         }
-
     }
 
 
