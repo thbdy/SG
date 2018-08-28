@@ -246,7 +246,7 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
         tvCredits.setText(credit + "/" + mCredits[level + 1]);
         ivNowLevel.setBackgroundResource(LevelEnum.getImgByLevel("LV" + level));
         ivNextLevel.setBackgroundResource(LevelEnum.getImgByLevel("LV" + (level + 1)));
-        mProgressBar.setProgress(mCredits[level] * 100 / mCredits[level + 1]);
+        mProgressBar.setProgress(credit * 100 / mCredits[level + 1]);
 
     }
 

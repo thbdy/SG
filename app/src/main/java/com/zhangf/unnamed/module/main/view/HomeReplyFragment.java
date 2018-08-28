@@ -38,7 +38,7 @@ public class HomeReplyFragment extends BaseFragment<HomeReplyPresenterImpl> impl
 
     @Override
     protected void initData() {
-//        mPresenter.fetchHisReply("1", "mythread2", "4", "reply", mUid);
+        mPresenter.fetchHisReply("1", "mythread2", "4", "reply", mUid);
     }
 
     @Override

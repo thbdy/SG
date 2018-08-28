@@ -28,6 +28,7 @@ public class MyFriendsAdapter extends BaseQuickAdapter<MyFriendsResult.ListBean,
         CircleImageView civHead = helper.getView(R.id.civ_head);
         Glide.with(mContext).load(item.getAvatar()).error(R.drawable.icon_default_head).into(civHead);
         ImageView ivLevel = helper.getView(R.id.iv_level);
+        helper.addOnClickListener(R.id.iv_chat);
         ivLevel.setBackgroundResource(LevelEnum.getImgByLevel(item.getGroupname()));
 
 

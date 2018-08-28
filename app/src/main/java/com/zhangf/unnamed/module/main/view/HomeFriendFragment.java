@@ -62,6 +62,18 @@ public class HomeFriendFragment extends BaseFragment<HomeFriendPresenterImpl> im
                 startActivity(intent);
             }
         });
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                if (view.getId() == R.id.iv_chat){
+                    Intent intent = new Intent(mContext,ChatActivity.class);
+                    intent.putExtra("uid",mDataList.get(position).getUid());
+                    intent.putExtra("nickname",mDataList.get(position).getUsername());
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
     }
 
     @Override

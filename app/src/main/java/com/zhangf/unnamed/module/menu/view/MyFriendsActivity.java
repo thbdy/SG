@@ -13,6 +13,7 @@ import com.zhangf.unnamed.R;
 import com.zhangf.unnamed.adapter.MyFriendsAdapter;
 import com.zhangf.unnamed.base.BaseActivity;
 import com.zhangf.unnamed.base.BaseResponse2;
+import com.zhangf.unnamed.module.main.view.ChatActivity;
 import com.zhangf.unnamed.module.main.view.UserHomePagerActivity;
 import com.zhangf.unnamed.module.menu.model.MyFriendsResult;
 import com.zhangf.unnamed.module.menu.presenter.MyFriendsPresenter;
@@ -64,6 +65,19 @@ public class MyFriendsActivity extends BaseActivity<MyFriendsPresenterImpl> impl
                 Intent intent = new Intent(mContext, UserHomePagerActivity.class);
                 intent.putExtra("uid",mDataList.get(position).getUid());
                 startActivity(intent);
+            }
+        });
+
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                if (view.getId() == R.id.iv_chat){
+                    Intent intent = new Intent(mContext,ChatActivity.class);
+                    intent.putExtra("uid",mDataList.get(position).getUid());
+                    intent.putExtra("nickname",mDataList.get(position).getUsername());
+                    startActivity(intent);
+                }
+                return false;
             }
         });
     }

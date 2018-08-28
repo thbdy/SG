@@ -1,285 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rl_header"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="250dp">
-        <ImageView
-            android:scaleType="centerCrop"
-            android:id="@+id/iv_blur"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <com.zhangf.unnamed.weight.CircleImageView
-            android:transitionName="head"
-            android:layout_centerInParent="true"
-            android:src="@mipmap/ic_launcher"
-            android:id="@+id/civ_head"
-            android:layout_gravity="center"
-            android:layout_width="80dp"
-            android:layout_height="80dp" />
-        <TextView
-            android:layout_marginTop="5dp"
-            android:id="@+id/tv_nickname"
-            android:textColor="@color/white"
-            android:layout_centerHorizontal="true"
-            android:textSize="20sp"
-            android:text="昵称"
-            android:layout_below="@+id/civ_head"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <ImageView
-            android:id="@+id/iv_level"
-            android:layout_alignBottom="@+id/tv_nickname"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/tv_nickname"
-            android:layout_width="24dp"
-            android:layout_height="24dp" />
-
-        <ImageView
-            android:id="@+id/iv_action"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/selector_action_bg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:padding="2.5dp"
-            android:layout_marginBottom="10dp"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/shape_common_1"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_width="200dp"
             android:layout_height="wrap_content">
-            <LinearLayout
-                android:gravity="center_horizontal"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:text="回帖数"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/tv_post"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:text="11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+            <!--头布局-->
+            <include layout="@layout/include_user_info_header" />
 
-            <LinearLayout
-                android:gravity="center_horizontal"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:text="发帖数"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/tv_threads"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:text="11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:gravity="center_horizontal"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:text="朋友"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/tv_friends"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:text="11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
+            <!--金币，荣誉，超丸，人气,经验-->
+            <include layout="@layout/include_user_info" />
         </LinearLayout>
+        <android.support.design.widget.TabLayout
+            android:paddingTop="10dp"
+            android:background="@color/white"
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_credits">
+
+        </android.support.design.widget.TabLayout>
 
 
-    </RelativeLayout>
-
-
-    <!--金币，荣誉，超丸，人气-->
-    <LinearLayout
-        android:id="@+id/ll_uer_info_1"
-        android:padding="10dp"
-        android:layout_below="@+id/rl_header"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:gravity="left|center_vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent">
-            <TextView
-                android:textSize="12sp"
-                android:text="金币："
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:textSize="12sp"
-                android:id="@+id/tv_gold"
-                
-                android:gravity="center_vertical"
-                android:drawableRight="@drawable/icon_gold"
-                android:text="5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent">
-            <TextView
-                android:textSize="12sp"
-                android:text="荣誉："
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:textSize="12sp"
-                android:id="@+id/tv_honor"
-                
-                android:gravity="center_vertical"
-                android:drawableRight="@drawable/icon_honor"
-                android:text="5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent">
-            <TextView
-                android:textSize="12sp"
-                android:text="超丸："
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:textSize="12sp"
-                android:id="@+id/tv_super_drug"
-                
-                android:gravity="center_vertical"
-                android:drawableRight="@drawable/icon_super_drug"
-                android:text="5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:gravity="right|center_vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent">
-            <TextView
-                android:textSize="12sp"
-                android:text="人气："
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:textSize="12sp"
-                android:id="@+id/tv_human_qi"
-                
-                android:gravity="center_vertical"
-                android:drawableRight="@drawable/icon_human_qi"
-                android:text="5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/ll_credits"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:gravity="center_vertical"
-        android:layout_below="@+id/ll_uer_info_1"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/iv_now_level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <FrameLayout
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="15dp">
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:max="100"
-                android:progress="80"
-                android:progressDrawable="@drawable/shape_progressbar"/>
-            <TextView
-                android:id="@+id/tv_credits"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:layout_gravity="center"
-                android:text="1111"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </FrameLayout>
-
-
-        <ImageView
-            android:id="@+id/iv_next_level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
 
 
 
 
-    <android.support.design.widget.TabLayout
-        android:layout_below="@+id/ll_credits"
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-    </android.support.design.widget.TabLayout>
+
 
     <android.support.v4.view.ViewPager
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -287,5 +50,4 @@
     </android.support.v4.view.ViewPager>
 
 
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

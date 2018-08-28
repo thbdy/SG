@@ -5,6 +5,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.from206.common.utils.DateUtils;
 import com.zhangf.unnamed.R;
+import com.zhangf.unnamed.UserInfoManager;
 import com.zhangf.unnamed.module.menu.model.PrivateLetterResult;
 import com.zhangf.unnamed.weight.CircleImageView;
 
@@ -23,10 +24,14 @@ public class PrivateLetterAdapter extends BaseQuickAdapter<PrivateLetterResult.L
     @Override
     protected void convert(BaseViewHolder helper, PrivateLetterResult.ListBean item) {
         CircleImageView civHead = helper.getView(R.id.civ_head);
-        Glide.with(mContext).load(item.getMsgfromid_avatar()).error(R.drawable.icon_default_head).into(civHead);
-        helper.setText(R.id.tv_nickname,item.getLastauthor());
+        Glide.with(mContext).load(item.getMsgfrom().equals(UserInfoManager.getUserInfoManager().getNickname())?
+                item.getMsgtoid_avatar():item.getMsgfromid_avatar()).error(R.drawable.icon_default_head).into(civHead);
+        helper.setText(R.id.tv_nickname,item.getMsgfrom().equals(UserInfoManager.getUserInfoManager().getNickname())?
+                item.getTousername():item.getMsgfrom());
         helper.setText(R.id.tv_time, DateUtils.getDateToString(Long.valueOf(item.getLastdateline())));
         helper.setText(R.id.tv_content,item.getLastsummary());
+
+
 
 
     }

@@ -9,6 +9,7 @@
         android:layout_height="50dp" />
 
     <ImageView
+        android:id="@+id/iv_chat"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"

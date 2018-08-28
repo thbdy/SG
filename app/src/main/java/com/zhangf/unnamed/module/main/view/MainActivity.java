@@ -260,10 +260,11 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
             threadlistBeanList.addAll(result.getVariables().getForum_threadlist());
             //移除前六条置顶广告
             if(mPage == 1){
-                for(int i = 0;i< 6;i++){
+                for(int i = 0;i< 4;i++){
                     threadlistBeanList.remove(0);
                 }
             }
+
             themeListAdapter.notifyDataSetChanged();
             if(mPage == 1){
                 rvData.smoothScrollToPosition(0);
