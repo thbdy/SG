@@ -146,6 +146,7 @@ public class SearchActivity extends BaseActivity<SearchPresenterImpl> implements
                 this.finish();
                 break;
             case R.id.btn_search:
+                showLoadingDialog("正在搜索");
                 String content = etSearchContent.getText().toString().trim();
                 String postData = "formhash=" + formhash + "&srchtxt=" + content + "&searchsubmit=yes";
                 mPresenter.fetchSearch(formhash,content,"yes");
@@ -157,6 +158,7 @@ public class SearchActivity extends BaseActivity<SearchPresenterImpl> implements
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            dismissLoadingDialog();
             if(msg.what == 0){
                 themeListAdapter.notifyDataSetChanged();
                 rvSearch.smoothScrollToPosition(0);
@@ -178,7 +180,6 @@ public class SearchActivity extends BaseActivity<SearchPresenterImpl> implements
             @Override
             public void run() {
                 try {
-
                     Document doc = Jsoup.connect(url).get();
                     Element element = doc.getElementById("threadlist");
                     if(null != element){

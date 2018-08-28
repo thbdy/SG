@@ -1,5 +1,6 @@
 package com.zhangf.unnamed.module.menu.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +10,11 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.zhangf.unnamed.R;
+import com.zhangf.unnamed.UserInfoManager;
 import com.zhangf.unnamed.adapter.PrivateLetterAdapter;
 import com.zhangf.unnamed.base.BaseFragment;
 import com.zhangf.unnamed.base.BaseResponse2;
+import com.zhangf.unnamed.module.main.view.ChatActivity;
 import com.zhangf.unnamed.module.menu.model.PrivateLetterResult;
 import com.zhangf.unnamed.module.menu.presenter.MyMessagePresenter;
 import com.zhangf.unnamed.module.menu.presenter.PrivateLetterPresenterImpl;
@@ -60,9 +63,12 @@ public class PrivateLetterFragment extends BaseFragment<PrivateLetterPresenterIm
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                Intent intent = new Intent(mContext,UserHomePagerActivity.class);
-//                intent.putExtra("uid",mPrivateLetterList.get(position).getAuthorid());
-//                startActivity(intent);
+                Intent intent = new Intent(mContext,ChatActivity.class);
+                intent.putExtra("uid",!mPrivateLetterList.get(position).getTouid().equals(UserInfoManager.getUserInfoManager().getUcid())?
+                        mPrivateLetterList.get(position).getTouid():mPrivateLetterList.get(position).getMsgfromid());
+                intent.putExtra("nickname",!mPrivateLetterList.get(position).getTousername().equals(UserInfoManager.getUserInfoManager().getNickname())?
+                        mPrivateLetterList.get(position).getTousername():mPrivateLetterList.get(position).getMsgfrom());
+                startActivity(intent);
 
             }
         });

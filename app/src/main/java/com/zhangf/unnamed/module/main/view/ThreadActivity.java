@@ -55,9 +55,8 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
 
     @Override
     protected void initData() {
-//        mPresenter.fetchCheckPost();
+        mPresenter.fetchCheckPost();
 //        mPresenter.fetchThreadInfo(mTid);
-
     }
 
     @Override
@@ -148,6 +147,7 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
         ButterKnife.bind(this);
     }
 
+
     @Override
     protected void initToolBar(Bundle savedInstanceState) {
         ivBack.setVisibility(View.VISIBLE);
@@ -167,11 +167,11 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
                 String time1 = String.valueOf(System.currentTimeMillis());
                 String time = time1.substring(0,time1.length()-3);
 
-                mPresenter.fetchCheckPost("post",
+                mPresenter.fetchReply("post",
                         "reply",
                         "283",
                         mTid,
-                        "page%3D1",
+                        "page=1",
                         "yes",
                         "yes",
                         "fastpost",

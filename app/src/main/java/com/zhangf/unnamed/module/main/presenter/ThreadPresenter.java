@@ -10,22 +10,22 @@ import retrofit2.http.Query;
 public class ThreadPresenter {
     interface Presenter{
         void fetchThreadInfo(String tid);
-        void fetchCheckPost(@Query("mod") String mod,
-                            @Query("action")String action,
-                            @Query("fid")String fid,
-                            @Query("tid")String tid,
-                            @Query("extra")String extra,
-                            @Query("replysubmit")String replysubmit,
-                            @Query("infloat")String infloat,
-                            @Query("handlekey")String handlekey,
-                            @Query("inajax")String inajax,
-                            @Field("message") String message,
-                            @Field("posttime") String posttime,
-                            @Field("formhash") String formhash,
-                            @Field("usesig") String usesig,
-                            @Field("subject") String subject);
+        void fetchCheckPost();
 
-        void fetchReply();
+        void fetchReply(@Query("mod") String mod,
+                        @Query("action")String action,
+                        @Query("fid")String fid,
+                        @Query("tid")String tid,
+                        @Query("extra")String extra,
+                        @Query("replysubmit")String replysubmit,
+                        @Query("infloat")String infloat,
+                        @Query("handlekey")String handlekey,
+                        @Query("inajax")String inajax,
+                        @Field("message") String message,
+                        @Field("posttime") String posttime,
+                        @Field("formhash") String formhash,
+                        @Field("usesig") String usesig,
+                        @Field("subject") String subject);
     }
     public interface View extends BaseView {
         void showThreadInfo(BaseResponse2 result);

@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.widget.ImageView;
@@ -35,15 +36,16 @@ import com.zhangf.unnamed.module.main.model.ThemeListResult;
 import com.zhangf.unnamed.module.main.presenter.MainPresenter;
 import com.zhangf.unnamed.module.main.presenter.MainPresenterImpl;
 import com.zhangf.unnamed.module.menu.view.DarkRoomActivity;
-import com.zhangf.unnamed.module.menu.view.SearchActivity;
 import com.zhangf.unnamed.module.menu.view.MyFriendsActivity;
 import com.zhangf.unnamed.module.menu.view.MyMessageActivity;
+import com.zhangf.unnamed.module.menu.view.SearchActivity;
 import com.zhangf.unnamed.utils.GlideImageEngine;
 import com.zhangf.unnamed.utils.ImageBlurUtil;
 import com.zhangf.unnamed.utils.SPUtils;
 import com.zhangf.unnamed.utils.SaveCookiesUtils;
 import com.zhangf.unnamed.utils.ToastUtil;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,11 +135,15 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
         ArrayList<String> mImageList = new ArrayList<>();
         imageList.clear();
         imageList.addAll(threadlistBeanList.get(position).getAttachment_urls());
-        for(String s:threadlistBeanList.get(position).getAttachment_urls()){
-            mImageList.add(s.replace("size=200_200","size=400_400"));
-        }
+        Log.e(TAG, "showImageBrowseDialog: "+imageList.get(0));
+        for(String entity:threadlistBeanList.get(position).getAttachment_urls()){
+            if(entity.contains("url=")){
+                mImageList.add(URLDecoder.decode(entity.split("url=")[1]));
+            }else {
+                mImageList.add(entity);
+            }
 
-//        http://bbs.sgamer.com/plugin.php?id=bigapp:optpic&mod=__x__&url=http%3A%2F%2Ffj2.sgamer.com%2Fattachment%2Fforum%2F201808%2F21%2F014801ac1g0y0b2htyhx1h.jpg
+        }
         MNImageBrowser.with(this)
                 .setCurrentPosition(0)
                 .setImageEngine(new GlideImageEngine())

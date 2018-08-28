@@ -36,36 +36,44 @@ public class App extends Application {
 
     /**
      * 存储cookie
+     *
      * @param cookies
      */
     public void saveCookie(List<Cookie> cookies) {
-        for (int i = 0; i < cookies.size(); i++) {
-            for (int k = 0; k < cookieList.size(); k++) {
-                if (cookieList.get(k).name().equals(cookies.get(i).name())) {
-                    cookieList.remove(k);
+
+        synchronized (cookieList) {
+            for (int i = 0; i < cookies.size(); i++) {
+                for (int k = 0; k < cookieList.size(); k++) {
+                    if (cookieList.get(k).name().equals(cookies.get(i).name())) {
+                        cookieList.remove(k);
+                    }
                 }
             }
-        }
-        cookieList.addAll(cookies);
-        for(Cookie cookie : cookieList){
-            SaveCookiesUtils.put(this,cookie.name(), new Gson().toJson(cookie));
+            cookieList.addAll(cookies);
+            for (Cookie cookie : cookieList) {
+                SaveCookiesUtils.put(this, cookie.name(), new Gson().toJson(cookie));
+            }
         }
     }
 
+
     /**
      * 获取cookie
+     *
      * @return
      */
     public List<Cookie> getCookie() {
-        if(null == cookieList || cookieList.size() <= 0){
-            Map<String,?> cookies =  SaveCookiesUtils.getAll(this);
-            for (Object o : cookies.entrySet()) {
-                Map.Entry entry = (Map.Entry) o;
-                String val = (String) entry.getValue();
-                cookieList.add(new Gson().fromJson(val,Cookie.class));
+        synchronized (cookieList){
+            if (null == cookieList || cookieList.size() <= 0) {
+                Map<String, ?> cookies = SaveCookiesUtils.getAll(this);
+                for (Object o : cookies.entrySet()) {
+                    Map.Entry entry = (Map.Entry) o;
+                    String val = (String) entry.getValue();
+                    cookieList.add(new Gson().fromJson(val, Cookie.class));
+                }
             }
+            return cookieList;
         }
-        return cookieList;
     }
 
 

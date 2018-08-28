@@ -6,6 +6,7 @@
     <include
         layout="@layout/include_header_layout"/>
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="10dp"
         android:id="@+id/rv_chat"
         android:layout_width="match_parent"
         android:layout_weight="1"

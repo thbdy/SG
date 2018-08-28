@@ -258,8 +258,8 @@ public class RetrofitHelper {
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
             Response response = chain.proceed(request);
-            if(response.isRedirect()){
-                Log.e("TAG", "intercept: " );
+            if(response.code() == 302){
+                Log.e("TAG", "intercept: "+response.toString() );
                 EventBus.getDefault().post(new RedirectEvent(response.header("location")));
             }
             return response;
