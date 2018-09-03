@@ -1,8 +1,6 @@
 package com.zhangf.unnamed.http;
 
 
-import android.util.Log;
-
 import com.from206.common.utils.CommonUtil;
 import com.zhangf.unnamed.App;
 import com.zhangf.unnamed.http.api.AddFriendApi;
@@ -15,6 +13,7 @@ import com.zhangf.unnamed.http.api.HisThreadApi;
 import com.zhangf.unnamed.http.api.LoginServiceApi;
 import com.zhangf.unnamed.http.api.MyFriendApi;
 import com.zhangf.unnamed.http.api.NotificationApi;
+import com.zhangf.unnamed.http.api.PostNewApi;
 import com.zhangf.unnamed.http.api.PrivateLetterApi;
 import com.zhangf.unnamed.http.api.ProFileApi;
 import com.zhangf.unnamed.http.api.ReplyApi;
@@ -194,17 +193,23 @@ public class RetrofitHelper {
      * @return
      */
     public static SearchApi getSearchApi() {
-        return createApi(SearchApi.class);
+        return createApi2(ApiConstants.BASE_URL6,SearchApi.class);
     }
     /**
      *回复
      * @return
      */
     public static ReplyApi getReply() {
-        return createApi2(ApiConstants.BASE_URL6,ReplyApi.class);
+        return createApi(ReplyApi.class);
     }
 
-
+    /**
+     *postnew
+     * @return
+     */
+    public static PostNewApi getPOstNewAPi() {
+        return createApi(PostNewApi.class);
+    }
 
 
 
@@ -259,7 +264,6 @@ public class RetrofitHelper {
             Request request = chain.request();
             Response response = chain.proceed(request);
             if(response.code() == 302){
-                Log.e("TAG", "intercept: "+response.toString() );
                 EventBus.getDefault().post(new RedirectEvent(response.header("location")));
             }
             return response;
@@ -313,7 +317,7 @@ public class RetrofitHelper {
                 .baseUrl(ApiConstants.BASE_URL6)
                 .client(mOkHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(new ToStringConverterFactory())
                 .build();
 
         return retrofit.create(clazz);

@@ -14,7 +14,14 @@ import com.zhangf.unnamed.module.menu.presenter.PrivateLetterPresenterImpl;
 public class AboutMeFragment extends BaseFragment<PrivateLetterPresenterImpl> implements MyMessagePresenter.View {
     @Override
     protected void initData() {
+//        http://bbs.sgamer.com/forum.php?mod=viewthread&tid=13830384&viewpid=55249797&from=&inajax=1&ajaxtarget=post_new
 
+//        mod: viewthread
+//        tid: 13830384
+//        viewpid: 55249797
+//        from:
+//        inajax: 1
+//        ajaxtarget: post_new
     }
 
     @Override

@@ -26,10 +26,21 @@ public class ThreadPresenter {
                         @Field("formhash") String formhash,
                         @Field("usesig") String usesig,
                         @Field("subject") String subject);
+
+        void fetchPOstNew(@Query("mod") String mod,
+                          @Query("tid") String tid,
+                          @Query("viewpid") String pid,
+                          @Query("from") String from,
+                          @Query("inajax") String inajax,
+                          @Query("ajaxtarget") String ajaxtarge);
+
+        void fetchTimeCode(String time,String code);
     }
     public interface View extends BaseView {
         void showThreadInfo(BaseResponse2 result);
         void showCheckPost(BaseResponse2<CheckPostResult> result);
         void showReply(String result);
+        void showPostNew(String result);
+        void showTimeCode(String s);
     }
 }

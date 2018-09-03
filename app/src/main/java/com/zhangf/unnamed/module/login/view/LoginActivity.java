@@ -21,6 +21,7 @@ import com.zhangf.unnamed.module.main.model.CheckPostResult;
 import com.zhangf.unnamed.module.main.model.UserGoldResult;
 import com.zhangf.unnamed.module.main.model.UserInfoResult;
 import com.zhangf.unnamed.module.main.view.MainActivity;
+import com.zhangf.unnamed.utils.SP2Utils;
 import com.zhangf.unnamed.utils.SPUtils;
 import com.zhangf.unnamed.utils.ToastUtil;
 import com.zhangf.unnamed.utils.TokenUtil;
@@ -79,6 +80,13 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
             this.finish();
         }
 
+        String name = String.valueOf(SP2Utils.get(mContext,"name",""));
+        String pwd = String.valueOf(SP2Utils.get(mContext,"pwd",""));
+        if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(pwd)){
+            etUsername.setText(name);
+            etPwd.setText(pwd);
+        }
+
     }
 
     @Override
@@ -121,14 +129,11 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
             code = result.getExtra().split("&code=")[1];
             time = result.getExtra().split("&code=")[0].split("time=")[1];
 
-//            https://bbs.sgamer.com/api/mobile/index.php?g=app&m=user&a=getuserinfo
-//            https://betapi.sgamer.com/index.php?g=app&m=user&a=getuserinfo
+            SPUtils.put(mContext,"time",time);
+            SPUtils.put(mContext,"code",code);
+
+
             mPresenter.fetchUserInfo(result.getErrorMsg(), apiToken);
-//            mPresenter.fetchUserGold(result.getErrorMsg(),apiToken);
-
-
-//            mPresenter.fettchCheckPost();
-
         }else {
             dismissLoadingDialog();
         }
@@ -163,6 +168,8 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
         ToastUtil.showToast(mContext,"登录成功");
         UserInfoManager.getUserInfoManager().setLogin(true);
         SPUtils.put(mContext,"formhash",result.getVariables().getFormhash());
+        SP2Utils.put(mContext,"name",username);
+        SP2Utils.put(mContext,"pwd",password);
         this.finish();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

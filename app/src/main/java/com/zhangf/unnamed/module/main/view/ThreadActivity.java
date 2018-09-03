@@ -44,7 +44,8 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
     private String mTid;
     private String URL = "http://bbs.sgamer.com/wap/post.php?tid=";
     private String formhash;
-//    13814643
+    private String mTime;
+    //    13814643
 //    http://bbs.sgamer.com/forum.php?mod=post&action=reply&fid=283&tid=13829211&extra=page%3D1&replysubmit=yes&infloat=yes&handlekey=fastpost&inajax=1
 //    https://bbs.sgamer.com/api/mobile/iyz_index.php?module=sendreply&version=1&replysubmit=yes&infloat=yes&handlekey=fastpost
 //    message: 就跟去年IG和OG在野区中路和塔的护甲改版以后就菜了一样。。。冰娃就是恶心你，你有什么办法
@@ -52,11 +53,10 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
 //    formhash: 461eab3d
 //    usesig: 1
 //    subject:
-
     @Override
     protected void initData() {
         mPresenter.fetchCheckPost();
-//        mPresenter.fetchThreadInfo(mTid);
+        mPresenter.fetchThreadInfo(mTid);
     }
 
     @Override
@@ -72,6 +72,11 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        String time1 = String.valueOf(System.currentTimeMillis());
+        mTime = time1.substring(0,time1.length()-3);
+
+
+
         formhash = (String) SPUtils.get(mContext, "formhash", "");
         setWebviewCookie(); //设置cookie
         mTid = getIntent().getStringExtra("tid");
@@ -135,8 +140,33 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
 
     @Override
     public void showReply(String result) {
-        etContent.setText("");
-        ToastUtil.showToast(mContext,"发布成功");
+
+        if(result.contains("成功")){
+            etContent.setText("");
+            ToastUtil.showToast(mContext,"发布成功");
+
+//            String mPid = result.split("&pid=")[1].split("&page")[0];
+//            mPresenter.fetchPOstNew("viewthread",mTid,mPid,"","1","post_new");
+
+
+        }else if(result.contains("间隔")){
+            ToastUtil.showToast(mContext,"两次发言间隔不能低于15秒");
+        }else if(result.contains("字符")){
+            ToastUtil.showToast(mContext,"输入的字符不能为空");
+
+        }
+
+
+    }
+
+    @Override
+    public void showPostNew(String result) {
+        webView.reload();
+
+    }
+
+    @Override
+    public void showTimeCode(String s) {
 
     }
 
@@ -164,8 +194,7 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
             case R.id.btn_send:
                 String content = etContent.getText().toString().trim();
 
-                String time1 = String.valueOf(System.currentTimeMillis());
-                String time = time1.substring(0,time1.length()-3);
+
 
                 mPresenter.fetchReply("post",
                         "reply",
@@ -177,11 +206,12 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
                         "fastpost",
                         "1",
                         content,
-                        time,
+                        mTime,
                         formhash,
                         "1",
-                        "");
+                        "++");
                 break;
         }
     }
+
 }

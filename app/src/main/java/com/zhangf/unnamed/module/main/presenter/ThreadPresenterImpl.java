@@ -57,6 +57,52 @@ public class ThreadPresenterImpl extends BasePresenter<ThreadPresenter.View> imp
                 });
     }
 
+    @Override
+    public void fetchPOstNew(String mod, String tid, String pid, String from, String inajax, String ajaxtarge) {
+        RetrofitHelper
+                .getPOstNewAPi()
+                .fetchPostNew(mod, tid, pid, from, inajax, ajaxtarge)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseObserver<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        super.onSubscribe(d);
+                        addSubscribe(d);
+                    }
+                    @Override
+                    protected void onNextSuccess(String scenicInfo) {
+                        mView.showPostNew(scenicInfo);
+                    }
+                });
+    }
+
+    @Override
+    public void fetchTimeCode(String time, String code) {
+        RetrofitHelper
+                .TimeCodeApi()
+                .fetchTimeCode(time, code)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseObserver<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        super.onSubscribe(d);
+                        addSubscribe(d);
+                    }
+                    @Override
+                    protected void onNextSuccess(String scenicInfo) {
+                        mView.showTimeCode(scenicInfo);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        mView.showTimeCode("");
+                    }
+                });
+    }
+
 
     @Override
     public void fetchCheckPost() {

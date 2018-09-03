@@ -49,6 +49,9 @@ public class App extends Application {
                     }
                 }
             }
+//            for(Cookie cookie:cookies){
+//                Log.e(TAG, "saveCookie: "+cookie.toString());
+//            }
             cookieList.addAll(cookies);
             for (Cookie cookie : cookieList) {
                 SaveCookiesUtils.put(this, cookie.name(), new Gson().toJson(cookie));
@@ -72,6 +75,9 @@ public class App extends Application {
                     cookieList.add(new Gson().fromJson(val, Cookie.class));
                 }
             }
+//            for(Cookie cookie: cookieList){
+//                Log.e(TAG, "getCookie: "+cookie.toString());
+//            }
             return cookieList;
         }
     }

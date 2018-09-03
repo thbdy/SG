@@ -258,10 +258,14 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
                 threadlistBeanList.clear();
             }
             threadlistBeanList.addAll(result.getVariables().getForum_threadlist());
-            //移除前六条置顶广告
+            //移除置顶
             if(mPage == 1){
-                for(int i = 0;i< 4;i++){
-                    threadlistBeanList.remove(0);
+                for(int i = 0;i< threadlistBeanList.size();i++){
+                    if(threadlistBeanList.get(0).getHighlight() != null){
+                        threadlistBeanList.remove(0);
+                    }else {
+                        break;
+                    }
                 }
             }
 
