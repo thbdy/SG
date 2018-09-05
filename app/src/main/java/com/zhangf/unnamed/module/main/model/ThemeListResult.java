@@ -836,6 +836,38 @@ public class ThemeListResult {
     }
 
     public static class ForumThreadlistBean {
+        @Override
+        public String toString() {
+            return "ForumThreadlistBean{" +
+                    "tid='" + tid + '\'' +
+                    ", fid='" + fid + '\'' +
+                    ", typeid='" + typeid + '\'' +
+                    ", readperm='" + readperm + '\'' +
+                    ", author='" + author + '\'' +
+                    ", authorid='" + authorid + '\'' +
+                    ", subject='" + subject + '\'' +
+                    ", dateline='" + dateline + '\'' +
+                    ", lastpost='" + lastpost + '\'' +
+                    ", lastposter='" + lastposter + '\'' +
+                    ", views='" + views + '\'' +
+                    ", replies='" + replies + '\'' +
+                    ", highlight='" + highlight + '\'' +
+                    ", digest='" + digest + '\'' +
+                    ", attachment='" + attachment + '\'' +
+                    ", heats='" + heats + '\'' +
+                    ", icon='" + icon + '\'' +
+                    ", typename='" + typename + '\'' +
+                    ", dbdateline='" + dbdateline + '\'' +
+                    ", dblastpost='" + dblastpost + '\'' +
+                    ", mobile='" + mobile + '\'' +
+                    ", message_abstract='" + message_abstract + '\'' +
+                    ", avatar='" + avatar + '\'' +
+                    ", forum_name='" + forum_name + '\'' +
+                    ", author_display='" + author_display + '\'' +
+                    ", attachment_urls=" + attachment_urls +
+                    '}';
+        }
+
         /**
          * tid : 13767106
          * fid : 44

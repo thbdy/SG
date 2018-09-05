@@ -10,7 +10,6 @@ import java.util.List;
  * Email：752323877@qq.com
  */
 public class ChatResult {
-
     /**
      * cookiepre : U6IV_2132_
      * auth : a7e4aproFWd7vusSHDUfrb+DU4rsFeFEDhEjlwIq0kcZdKqsGniYYO7euxJ8AR2jpvOoG3GzTwazqHeLoe9N28XByun3

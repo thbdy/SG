@@ -103,6 +103,7 @@
             android:layout_height="wrap_content">
         </com.zhangf.unnamed.weight.MenuItemView>
         <com.zhangf.unnamed.weight.MenuItemView
+            android:visibility="gone"
             android:id="@+id/miv_my_thread"
             app:title="我的贴子"
             app:img_res="@drawable/icon_my_thread"

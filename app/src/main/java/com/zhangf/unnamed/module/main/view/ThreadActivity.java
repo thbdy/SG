@@ -78,7 +78,7 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
 
 
         formhash = (String) SPUtils.get(mContext, "formhash", "");
-        setWebviewCookie(); //设置cookie
+        setWebViewCookie(); //设置cookie
         mTid = getIntent().getStringExtra("tid");
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -107,11 +107,10 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
     /**
      * 设置cookie
      */
-    private void setWebviewCookie() {
+    private void setWebViewCookie() {
 
         //得到Cookie对象
 //        String cookie = SharedPreferencesUtils.getStr(this, "cookie");
-//        Log.d("tag", "setWebviewCookie: "+cookie);
         CookieSyncManager.createInstance(this);
         //得到CookieManager对象
         CookieManager cookieManager = CookieManager.getInstance();
@@ -145,8 +144,8 @@ public class ThreadActivity extends BaseActivity<ThreadPresenterImpl> implements
             etContent.setText("");
             ToastUtil.showToast(mContext,"发布成功");
 
-//            String mPid = result.split("&pid=")[1].split("&page")[0];
-//            mPresenter.fetchPOstNew("viewthread",mTid,mPid,"","1","post_new");
+            String mPid = result.split("&pid=")[1].split("&page")[0];
+            mPresenter.fetchPOstNew("viewthread",mTid,mPid,"","1","post_new");
 
 
         }else if(result.contains("间隔")){

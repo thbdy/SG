@@ -40,7 +40,6 @@ public class App extends Application {
      * @param cookies
      */
     public void saveCookie(List<Cookie> cookies) {
-
         synchronized (cookieList) {
             for (int i = 0; i < cookies.size(); i++) {
                 for (int k = 0; k < cookieList.size(); k++) {
@@ -67,7 +66,7 @@ public class App extends Application {
      */
     public List<Cookie> getCookie() {
         synchronized (cookieList){
-            if (null == cookieList || cookieList.size() <= 0) {
+            if ( cookieList.size() <= 0) {
                 Map<String, ?> cookies = SaveCookiesUtils.getAll(this);
                 for (Object o : cookies.entrySet()) {
                     Map.Entry entry = (Map.Entry) o;
@@ -106,7 +105,7 @@ public class App extends Application {
         cookieList.clear();
     }
 
-    private static List<Cookie> cookieList = new ArrayList<>();
+    private static final List<Cookie> cookieList = new ArrayList<>();
 
     public static App getApp() {
         return app;
