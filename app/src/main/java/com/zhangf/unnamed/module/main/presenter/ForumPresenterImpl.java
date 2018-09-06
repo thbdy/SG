@@ -7,16 +7,15 @@ import com.zhangf.unnamed.http.RetrofitHelper;
 import com.zhangf.unnamed.module.main.model.GetAllResult;
 import com.zhangf.unnamed.module.main.model.SignResult;
 import com.zhangf.unnamed.module.main.model.ThemeListResult;
-import com.zhangf.unnamed.module.main.view.MainActivity;
+import com.zhangf.unnamed.module.main.view.ForumFragment;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainPresenterImpl extends BasePresenter<MainActivity> implements MainPresenter.Presenter{
+public class ForumPresenterImpl extends BasePresenter<ForumFragment> implements ForumPresenter.Presenter {
 
-
-    public MainPresenterImpl(MainActivity mView) {
+    public ForumPresenterImpl(ForumFragment mView) {
         super(mView);
     }
 

@@ -6,7 +6,7 @@ import com.zhangf.unnamed.module.main.model.GetAllResult;
 import com.zhangf.unnamed.module.main.model.SignResult;
 import com.zhangf.unnamed.module.main.model.ThemeListResult;
 
-public class MainPresenter {
+public class ForumPresenter {
     interface Presenter{
         void fetchGetAll( String fid, String page);
         void fetchThemeList( String fid, String page);
@@ -17,6 +17,5 @@ public class MainPresenter {
         void showGetAll(BaseResponse2<GetAllResult> result);
         void showThemeList(BaseResponse2<ThemeListResult> result);
         void showSign(SignResult result);
-
     }
 }

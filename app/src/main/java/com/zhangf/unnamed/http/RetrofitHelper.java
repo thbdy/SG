@@ -19,6 +19,7 @@ import com.zhangf.unnamed.http.api.ProFileApi;
 import com.zhangf.unnamed.http.api.ReplyApi;
 import com.zhangf.unnamed.http.api.SearchApi;
 import com.zhangf.unnamed.http.api.SendMessageApi;
+import com.zhangf.unnamed.http.api.SignApi;
 import com.zhangf.unnamed.http.api.ThemeListApi;
 import com.zhangf.unnamed.http.api.ThreadInfoApi;
 import com.zhangf.unnamed.http.api.TimeCodeApi;
@@ -211,6 +212,14 @@ public class RetrofitHelper {
         return createApi(PostNewApi.class);
     }
 
+    /**
+     * 签到
+     * @return
+     */
+    public static SignApi getSignAPi(){
+        return createApi2(ApiConstants.BASE_URL6,SignApi.class);
+    }
+
 
 
     private static void initOkHttpClient() {
@@ -258,6 +267,9 @@ public class RetrofitHelper {
         }
     };
 
+    /**
+     * 重定向拦截
+     */
     private static class Http302Interceptor implements Interceptor{
         @Override
         public Response intercept(Chain chain) throws IOException {

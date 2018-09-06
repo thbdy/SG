@@ -187,7 +187,7 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
                 .into(civHead);
 
 
-        //加载背景，
+        //加载头像的高斯模糊背景，
         Glide.with(mContext)
                 .load(result.getVariables().getSpace().getAvatar())
                 .error(R.drawable.icon_default_head)
@@ -236,6 +236,7 @@ public class UserHomePagerActivity extends BaseActivity<UserHomePagerPresenterIm
      * @param credit 积分数
      */
     private void showCredits(Integer credit) {
+
         int level = 0;
         for (int i = 0; i < mCredits.length; i++) {
             if (mCredits[i] <= credit && credit < mCredits[i + 1]) {

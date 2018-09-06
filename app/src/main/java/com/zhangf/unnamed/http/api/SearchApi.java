@@ -12,12 +12,8 @@ import retrofit2.http.POST;
  * Email：752323877@qq.com
  */
 public interface SearchApi {
-//    formhash: 886816e8
-//    srchtxt: sss
-//    searchsubmit: yes
-//    http://bbs.sgamer.com/search.php?mod=forum
-@FormUrlEncoded
-@POST("search.php?mod=forum")
-Observable<BaseResponse> fetchSearch(@Field("formhash") String formhash, @Field("srchtxt")String srchtxt, @Field("searchsubmit")String searchsubmit);
+    @FormUrlEncoded
+    @POST("search.php?mod=forum")
+    Observable<BaseResponse> fetchSearch(@Field("formhash") String formhash, @Field("srchtxt") String srchtxt, @Field("searchsubmit") String searchsubmit);
 
 }

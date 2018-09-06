@@ -11,59 +11,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/fl_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include
-                layout="@layout/include_header_layout"/>
-        </FrameLayout>
-
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/fl_header"
-            android:background="@color/white">
-
-        </android.support.design.widget.TabLayout>
-
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/smart_refresh_layout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/tab_layout"
-            android:background="@color/common_bg">
+            android:orientation="vertical">
 
+            <include layout="@layout/include_header_layout" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_data"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="10dp">
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-            </android.support.v7.widget.RecyclerView>
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            </android.support.v4.view.ViewPager>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/icon_refresh"
-            app:backgroundTint="@color/colorAccent"
-            app:elevation="5dp"
-            app:fabSize="normal"
-            app:rippleColor="#e22e6c" />
+            <include layout="@layout/include_bottom_nav_layout" />
+
+        </LinearLayout>
+
     </RelativeLayout>
 
     <!--侧滑菜单栏-->
-    <include
-        layout="@layout/include_left_menu" />
+    <include layout="@layout/include_left_menu" />
 
 
 </android.support.v4.widget.DrawerLayout>

@@ -33,7 +33,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements LoginPresenter.View {
-
     @BindView(R.id.et_username)
     EditText etUsername;
     @BindView(R.id.et_pwd)
@@ -43,10 +42,8 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     private String username;
     private String password;
     private String apiToken;
-
     private String time;
     private String code;
-
     @Override
     protected void initData() {
 
@@ -90,14 +87,13 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     }
 
     @Override
-    protected void initToolBar(Bundle savedInstanceState) {
+    protected void initToolBar(Bundle savedInstanceState){
 
     }
 
     @OnClick(R.id.btn_login)
     public void onViewClicked() {
         login();
-
     }
 
     /**
