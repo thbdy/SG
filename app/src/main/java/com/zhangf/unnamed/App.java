@@ -24,6 +24,7 @@ import okhttp3.Cookie;
 public class App extends Application {
     private static final String TAG = "App";
     private static App app;
+    int a = 1;
 
 
     @Override
@@ -31,6 +32,7 @@ public class App extends Application {
         super.onCreate();
         app = this;
         initSmartRefreshLayout();
+        a = 1111;
     }
 
 
